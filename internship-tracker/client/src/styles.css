@@ -1,0 +1,35 @@
+/* styles.css */
+.background {
+    background-image: url("/src/assets/backgroundimage.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+applicationTxt {
+    font-family: "Roboto Slab", serif;
+    font-size: 20px;
+    font-style:normal;
+    color:#020202;
+}
+
+body {
+    font-family: "Roboto Slab", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+.stat-name {
+    font-weight: bold;
+    text-align:center;
+    font-size: 24px;
+    color: #34a084;
+}
+
+.stat-value {
+    font-family: "Bungee", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 40px;
+    text-align: center;
+}
+
