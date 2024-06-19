@@ -4,6 +4,7 @@ import { ListGroup, Container, Row, Col, Form, Button } from 'react-bootstrap';
 
 const ApplicationList = ({ applications, setApplications, fetchStats }) => {
     const [filterStatus, setFilterStatus] = useState('All');
+    const [sortDirection, setSortDirection] = useState('desc');
 
     const handleStatusChange = async (id, newStatus) => {
         console.log('Changing status:', id, newStatus);
@@ -36,9 +37,19 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
         setFilterStatus(e.target.value);
     };
 
+    const handleSortChange = (e) => {
+        setSortDirection(e.target.value);
+    };
+
     const filteredApplications = applications.filter(app => 
         filterStatus === 'All' || app.currentStatus === filterStatus
     );
+
+    const sortedApplications = [...filteredApplications].sort((a, b) => {
+        const dateA = new Date(a.dateApplied);
+        const dateB = new Date(b.dateApplied);
+        return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
+    });
 
     const getBackgroundColor = (status) => {
         switch (status) {
@@ -66,8 +77,13 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                 <Col>
                 <h2>Current Applications</h2>
                 </Col>
+                <Col xs="2">
+                    <Form.Select onChange={handleSortChange} value={sortDirection}>
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </Form.Select>           
+                </Col>
                 <Col xs="3">
-                    
                     <Form.Select onChange={handleFilterChange} value={filterStatus}>
                         <option value="All">All</option>
                         <option value="Applied">Applied</option>
@@ -86,7 +102,7 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                 <Col>
                     
                     <ListGroup>
-                        {filteredApplications.map((app) => (
+                        {sortedApplications.map((app) => (
                             <ListGroup.Item
                                 key={app._id}
                                 style={{ backgroundColor: getBackgroundColor(app.currentStatus) }}
