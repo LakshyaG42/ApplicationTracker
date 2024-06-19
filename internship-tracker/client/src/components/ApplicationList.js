@@ -116,7 +116,7 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                                     >
                                         <Row>
                                             <Col>
-                                                {app.role} at {app.company} - Applied on {new Date(app.dateApplied).toLocaleDateString()}
+                                                {app.role} at {app.company} - Applied on {new Date(app.dateApplied).toUTCString().substring(4,16)}
                                             </Col>
                                             <Col xs="4">
                                                 <Form.Select

@@ -6,7 +6,7 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 const ApplicationForm = ({ setApplications }) => {
     const [role, setRole] = useState('');
     const [company, setCompany] = useState('');
-    const [dateApplied, setDateApplied] = useState(new Date().toISOString().substr(0, 10)); // Default to today's date
+    const [dateApplied, setDateApplied] = useState(new Date().toISOString().substr(0, 10)); 
     const [currentStatus, setCurrentStatus] = useState('Applied');
     const [existingRoles, setExistingRoles] = useState([]);
     const [existingCompanies, setExistingCompanies] = useState([]);
@@ -51,7 +51,7 @@ const ApplicationForm = ({ setApplications }) => {
 
         setRole('');
         setCompany('');
-        setDateApplied(new Date().toISOString().substr(0, 10)); // Reset to today's date
+        setDateApplied(new Date().toISOString().substr(0, 10));
         setCurrentStatus('Applied');
     };
 
