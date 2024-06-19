@@ -55,10 +55,8 @@ const App = () => {
           </AppContainer>
           <br></br>
           <AppContainer>
-            <h2>Current Applications</h2>
             <ApplicationList applications={applications} setApplications={setApplications} fetchStats={fetchStats} /> {}
           </AppContainer>
-            
         </Container>
     );
 };

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { ListGroup, Container, Row, Col, Form, Button } from 'react-bootstrap';
 
 const ApplicationList = ({ applications, setApplications, fetchStats }) => {
+    const [filterStatus, setFilterStatus] = useState('All');
+
     const handleStatusChange = async (id, newStatus) => {
         console.log('Changing status:', id, newStatus);
         try {
@@ -30,6 +32,14 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
         }
     };
 
+    const handleFilterChange = (e) => {
+        setFilterStatus(e.target.value);
+    };
+
+    const filteredApplications = applications.filter(app => 
+        filterStatus === 'All' || app.currentStatus === filterStatus
+    );
+
     const getBackgroundColor = (status) => {
         switch (status) {
             case 'Applied':
@@ -54,8 +64,29 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
         <Container>
             <Row>
                 <Col>
+                <h2>Current Applications</h2>
+                </Col>
+                <Col xs="3">
+                    
+                    <Form.Select onChange={handleFilterChange} value={filterStatus}>
+                        <option value="All">All</option>
+                        <option value="Applied">Applied</option>
+                        <option value="Online Assessment">Online Assessment</option>
+                        <option value="Interview Scheduled">Interview Scheduled</option>
+                        <option value="Interviewed">Interviewed</option>
+                        <option value="Offer Received">Offer Received</option>
+                        <option value="Offer Accepted">Offer Accepted</option>
+                        <option value="Rejected">Rejected</option>
+                    </Form.Select>
+                </Col>
+                
+            </Row>
+            
+            <Row>
+                <Col>
+                    
                     <ListGroup>
-                        {applications.map((app) => (
+                        {filteredApplications.map((app) => (
                             <ListGroup.Item
                                 key={app._id}
                                 style={{ backgroundColor: getBackgroundColor(app.currentStatus) }}
