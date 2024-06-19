@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { ListGroup, Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import './ApplicationList.css';
 
 const ApplicationList = ({ applications, setApplications, fetchStats }) => {
     const [filterStatus, setFilterStatus] = useState('All');
@@ -97,41 +99,47 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                 </Col>
                 
             </Row>
-            
             <Row>
                 <Col>
                     
-                    <ListGroup>
+                    <TransitionGroup component={ListGroup}>
                         {sortedApplications.map((app) => (
-                            <ListGroup.Item
-                                key={app._id}
-                                style={{ backgroundColor: getBackgroundColor(app.currentStatus) }}
+                            <CSSTransition
+                            key={app._id}
+                            timeout={500}
+                            classNames="fade"
                             >
-                                <Row>
-                                    <Col>
-                                        {app.role} at {app.company} - Applied on {new Date(app.dateApplied).toLocaleDateString()}
-                                    </Col>
-                                    <Col xs="4">
-                                        <Form.Select
-                                            value={app.currentStatus}
-                                            onChange={(e) => handleStatusChange(app._id, e.target.value)}
-                                        >
-                                            <option value="Applied">Applied</option>
-                                            <option value="Online Assessment">Online Assessment</option>
-                                            <option value="Interview Scheduled">Interview Scheduled</option>
-                                            <option value="Interviewed">Interviewed</option>
-                                            <option value="Offer Received">Offer Received</option>
-                                            <option value="Offer Accepted">Offer Accepted</option>
-                                            <option value="Rejected">Rejected</option>
-                                        </Form.Select>
-                                    </Col>
-                                    <Col xs="1">
-                                        <Button variant="danger" onClick={() => handleDelete(app._id)}>Delete</Button>
-                                    </Col>
-                                </Row>
-                            </ListGroup.Item>
+                                <ListGroup.Item
+                                    key={app._id}
+                                    style={{ backgroundColor: getBackgroundColor(app.currentStatus) }}
+                                >
+                                    <Row>
+                                        <Col>
+                                            {app.role} at {app.company} - Applied on {new Date(app.dateApplied).toLocaleDateString()}
+                                        </Col>
+                                        <Col xs="4">
+                                            <Form.Select
+                                                value={app.currentStatus}
+                                                onChange={(e) => handleStatusChange(app._id, e.target.value)}
+                                            >
+                                                <option value="Applied">Applied</option>
+                                                <option value="Online Assessment">Online Assessment</option>
+                                                <option value="Interview Scheduled">Interview Scheduled</option>
+                                                <option value="Interviewed">Interviewed</option>
+                                                <option value="Offer Received">Offer Received</option>
+                                                <option value="Offer Accepted">Offer Accepted</option>
+                                                <option value="Rejected">Rejected</option>
+                                            </Form.Select>
+                                        </Col>
+                                        <Col xs="1">
+                                            <Button variant="danger" onClick={() => handleDelete(app._id)}>Delete</Button>
+                                        </Col>
+                                    </Row>
+                                </ListGroup.Item>
+                            </CSSTransition>
                         ))}
-                    </ListGroup>
+                    </TransitionGroup>
+                    
                 </Col>
             </Row>
         </Container>
