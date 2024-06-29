@@ -1,6 +1,6 @@
 # Application Tracker
 
-This is a simple application tracker to help keep track of job applications. 
+This is a simple application tracker to help keep track of job applications. Feel free to check out my [website](https://lakshyag42.github.io/application-tracker.html) to learn more
 
 ## Features
 
