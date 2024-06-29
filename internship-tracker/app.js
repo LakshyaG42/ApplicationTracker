@@ -46,7 +46,7 @@ app.post('/applications', async (req, res) => {
     const application = new Application({ role, company, dateApplied, currentStatus });
     await application.save();
     res.status(201).send(application);
-    await updateStats(null, currentStatus); // Update stats on application creation
+    await updateStats(null, currentStatus); 
 });
 
 app.get('/applications', async (req, res) => {
