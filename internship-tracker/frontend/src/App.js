@@ -5,11 +5,21 @@ import ApplicationList from './components/ApplicationList';
 import AppContainer from './components/AppContainer'; 
 import Stats from './components/Stats';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Alert } from 'react-bootstrap';
+import { Container, Alert, Button, Row, Col } from 'react-bootstrap';
 import "./styles.css";
 import GoogleLoginButton from './components/GoogleLoginButton';
+import styled from 'styled-components';
 
 
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 10px; /* Adjust the gap to control padding between buttons */
+`;
+
+const CustomRow = styled(Row)`
+  justify-content: space-between;
+  align-items: center;
+  `;
 const App = () => {
     const [applications, setApplications] = useState([]);
 
@@ -95,7 +105,14 @@ const App = () => {
               </AppContainer>
 
               <AppContainer>
-                <h1>Internship Tracker</h1>
+                <CustomRow>
+                  <Col>
+                  <h1>Internship Tracker</h1> 
+                  </Col>
+                  <Col className="d-flex justify-content-end">
+                  <Button variant="secondary" onClick={handleLogout}>Logout</Button> 
+                  </Col>
+                </CustomRow>
                 <ApplicationForm setApplications={setApplications} /> {}
               </AppContainer>
 
@@ -106,12 +123,19 @@ const App = () => {
             </>
           ) : (
             <>
-              <Alert variant="danger">You are not logged in. Please log in to access the application.</Alert>
-              < GoogleLoginButton onSuccess={handleGoogleLoginSuccess} onFailure={handleGoogleLoginFailure} />
-              <button onClick={handleSample}> Sample Data </button>
+              <AppContainer>
+                <Alert variant="danger">You are not logged in. Please log in to access the application.</Alert>
+                <ButtonContainer>
+                  <GoogleLoginButton onSuccess={handleGoogleLoginSuccess} onFailure={handleGoogleLoginFailure} />
+                  <Button variant="primary" onClick={handleSample}>Sample Data</Button>
+                </ButtonContainer>                  
+              </AppContainer>
+              
+              
+              
             </>
         )}
-          {isLoggedIn && <button onClick={handleLogout}>Logout</button>}  
+           
         </Container>
     );
 };

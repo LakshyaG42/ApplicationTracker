@@ -118,10 +118,14 @@ const ApplicationForm = ({ setApplications }) => {
                         </Form.Control>
                     </Col>
                 </Row>
-
-                <Button variant="primary" type="submit" className="mt-3">
-                    Add Application
-                </Button>
+                <Row>
+                    <Col className="d-flex justify-content-end mt-3">
+                            <Button className="d-flex justify-content-end mt-3" variant="primary" type="submit" >
+                            Add Application
+                        </Button>
+                    </Col>
+                </Row>
+                
             </Form>
         </Container>
     );
