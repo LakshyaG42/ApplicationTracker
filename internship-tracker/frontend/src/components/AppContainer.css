@@ -1,0 +1,9 @@
+/* AppContainer.css */
+
+.app-container {
+    background-color: #ffffff; /* White background */
+    border-radius: 10px; /* Curved edges */
+    padding: 20px; /* Padding around the content */
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
