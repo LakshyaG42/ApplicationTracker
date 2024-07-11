@@ -5,21 +5,15 @@
   "main": "index.js",
   "scripts": {
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
-    "start:backend": "node app.js",
-    "start:frontend": "cd client && npm start",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:backend": "cd backend && npm start",
+    "start:frontend": "cd frontend && npm start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "npm install && cd backend && npm install && cd .. && cd frontend && npm install\""
   },
   "keywords": [],
-  "author": "",
+  "author": "Lakshya Gour",
   "license": "ISC",
   "dependencies": {
-    "bootstrap": "^5.3.3",
-    "cors": "^2.8.5",
-    "express": "^4.19.2",
-    "mongod": "^2.0.0",
-    "mongoose": "^8.4.3"
-  },
-  "devDependencies": {
     "concurrently": "^8.2.2"
   }
 }
