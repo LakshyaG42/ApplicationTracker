@@ -28,4 +28,8 @@ internship-tracker/frontend/.gitignore
 internship-tracker/frontend/node_modules
 internship-tracker/node_modules
 internship-tracker/backend/node_modules
+internship-tracker/backend/package-lock.json
+internship-tracker/frontend/package-lock.json
+internship-tracker/package-lock.json
+
 

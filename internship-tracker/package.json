@@ -8,7 +8,8 @@
     "start:backend": "cd backend && npm start",
     "start:frontend": "cd frontend && npm start",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "npm install && cd backend && npm install && cd .. && cd frontend && npm install\"",
+    "install": "echo \"!!!IMPORTANT!!! Please use 'npm run setup' also if you haven't already !!!IMPORTANT!!!\"",
+    "setup": "cd backend && npm install && cd ../frontend && npm install",
     "build": "cd frontend && npm run build"
   },
   "keywords": [],
