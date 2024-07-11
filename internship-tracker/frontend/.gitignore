@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+
 /.pnp
 .pnp.js
 
@@ -12,6 +13,8 @@
 /build
 
 # misc
+internship-tracker\backend\.env
+internship-tracker/frontend/.env
 .env
 .DS_Store
 .env.local
