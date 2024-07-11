@@ -2,14 +2,28 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors'); 
 const path = require('path');
+const session = require('express-session');
+const passport = require('passport');
+const { OAuth2Client } = require('google-auth-library');
 const Application = require(path.join(__dirname, 'models', 'Application'));
 const Stats = require('./models/Stats');
+const User = require('./models/User');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+
+
+require('dotenv').config();
 
 //const StatusChangeLog = require('./models/StatusChangeLog');
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+app.use(session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false
+}));
 
 mongoose.connect('mongodb://localhost:27017/internshipTracker', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -27,7 +41,117 @@ const initializeStats = async () => {
 
 initializeStats();
 
-const updateStats = async (oldStatus, newStatus) => {
+
+//LOGIN THINGS:
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: 'http://localhost:3000/auth/google/callback'
+  },
+  async (accessToken, refreshToken, profile, done) => {
+    try {
+      let user = await User.findOne({ googleId: profile.id });
+
+      if (!user) {
+        user = await User.create({
+          googleId: profile.id,
+          displayName: profile.displayName,
+          email: profile.emails[0].value
+        });
+      }
+
+      return done(null, user);
+    } catch (error) {
+      return done(error);
+    }
+  }
+));
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => {
+    done(err, user);
+  });
+});
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get('/auth/google', async (req, res) => {
+    try {
+      const response = await axios.get('https://accounts.google.com/o/oauth2/v2/auth', {
+        params: {
+          response_type: 'code',
+          redirect_uri: 'http://localhost:3000/auth/google/callback',
+          client_id: '854392932175-a79ndhc4uc09bnipvf0a0088q8kgubjb.apps.googleusercontent.com'
+        }
+      });
+      res.send(response.data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error fetching OAuth data');
+    }
+  });
+app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
+    // Successful authentication, redirect to client app
+    if(req.user && req.user._id) {
+        console.log(`User ${req.user.googleId} logged in`)
+        res.json({ message: 'Login successful',  });
+    } else {
+        res.status(500).json({ message: 'Login successful but userId not found' });
+    }
+    
+    res.redirect('http://localhost:3001/');
+});
+app.get('/logout', (req, res) => {
+    req.logout(); // Clear the session and logout
+    res.redirect('/');
+});
+
+
+app.post('/auth/google', async (req, res) => {
+    const { tokenId } = req.body;
+    console.log('Received tokenId:', tokenId);
+    try {
+        const ticket = await client.verifyIdToken({
+            idToken: tokenId,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+
+        const { sub: googleId, name, email } = ticket.getPayload();
+
+        let user = await User.findOne({ googleId });
+
+        if (!user) {
+            user = new User({
+                googleId,
+                displayName: name,
+                email,
+            });
+            await user.save();
+        }
+
+        req.login(user, (err) => {
+            if (err) {
+                return res.status(500).json({ message: 'Login failed' });
+            }
+            console.log(`User ${user.googleId} logged in`)
+            return res.status(200).json({ message: 'Login successful', userId: user.googleId});
+        });
+    } catch (error) {
+        console.error('Error logging in with Google:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+// LOGIN THINGS END
+
+const updateStats = async (userId, newStatus) => {
     const stats = await Stats.findOne();
     if (!stats) {
         console.error('Stats document not found');
@@ -44,30 +168,33 @@ const updateStats = async (oldStatus, newStatus) => {
 
 app.post('/applications', async (req, res) => {
     const { role, company, dateApplied, currentStatus } = req.body;
-    const application = new Application({ role, company, dateApplied, currentStatus });
-    await application.save();
-    res.status(201).send(application);
-    await updateStats(null, currentStatus); // Update stats on application creation
-});
-
-app.get('/applications', async (req, res) => {
-    const applications = await Application.find();
-    res.send(applications);
-});
-
-app.get('/applications', async (req, res) => {
+    const userId = req.query.userId;
     try {
-        const applications = await Application.find();
+        const application = new Application({ role, company, dateApplied, currentStatus, user: userId });
+        await application.save();
+        res.status(201).send(application);
+        await updateStats(userId, currentStatus); // Update stats on application creation
+    } catch (error) {
+        console.error('Error saving application:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.get('/applications', async (req, res) => {
+    const userId = req.query.userId;
+    try {
+        const applications = await Application.find({ user: userId });
         res.status(200).json(applications);
     } catch (error) {
         console.error('Error fetching applications:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).send({ error: 'Internal server error' });
     }
 });
 
 app.put('/applications/:id', async (req, res) => {
     const { id } = req.params;
     const { currentStatus } = req.body;
+    const userId = req.query.userId;
 
     try {
         const application = await Application.findById(id);
@@ -139,18 +266,18 @@ app.delete('/applications/:id', async (req, res) => {
 });
 app.get('/stats', async (req, res) => {
     try {
-        const stats = await Stats.findOne();
+        const userId = req.query.userId; // Assuming req.user contains the authenticated user object
 
-
-        const currentOAs = await Application.countDocuments({ currentStatus: 'Online Assessment' });
-        const currentInterviews = await Application.countDocuments({ currentStatus: 'Interview Scheduled' });
-        const applications = await Application.countDocuments();
-        
-        const rejected = await Application.countDocuments({ currentStatus: 'Rejected' });
+        // Fetch stats for the logged-in user only
+        const stats = await Stats.findOne({ user: userId});
+        const currentOAs = await Application.countDocuments({ user: userId, currentStatus: 'Online Assessment' });
+        const currentInterviews = await Application.countDocuments({ user: userId, currentStatus: 'Interview Scheduled' });
+        const applications = await Application.countDocuments({ user: userId });
+        const rejected = await Application.countDocuments({ user: userId, currentStatus: 'Rejected' });
 
         res.status(200).json({
-            onlineassessments:  stats ? stats.onlineassessments : 0,
-            interviews:stats ? stats.interviews : 0,
+            onlineassessments: stats ? stats.onlineassessments : 0,
+            interviews: stats ? stats.interviews : 0,
             applications: applications,
             offersreceived: stats ? stats.offersreceived : 0,
             rejected: rejected,
@@ -173,3 +300,5 @@ process.on('uncaughtException', err => {
     console.error(`There was an uncaught error: ${err}`);
     process.exit(1);
 })
+
+

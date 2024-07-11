@@ -7,7 +7,8 @@ const StatsSchema = new mongoose.Schema({
     offersreceived: { type: Number, default: 0 },
     rejected: { type: Number, default: 0 },
     currentInterviews: { type: Number, default: 0 },
-    currentOAs: { type: Number, default: 0 }
+    currentOAs: { type: Number, default: 0 },
+    user: { type: String, required: true }
 });
 
 module.exports = mongoose.model('Stats', StatsSchema);
