@@ -4,7 +4,8 @@ const cors = require('cors');
 const path = require('path');
 const Application = require(path.join(__dirname, 'models', 'Application'));
 const Stats = require('./models/Stats');
-const StatusChangeLog = require('./models/StatusChangeLog');
+
+//const StatusChangeLog = require('./models/StatusChangeLog');
 
 const app = express();
 app.use(express.json());
@@ -77,6 +78,8 @@ app.put('/applications/:id', async (req, res) => {
         application.currentStatus = currentStatus;
         await application.save();
 
+
+        /*
         // Log the status change
         const statusChangeLog = new StatusChangeLog({
             applicationId: id,
@@ -84,7 +87,7 @@ app.put('/applications/:id', async (req, res) => {
             newStatus: currentStatus
         });
         await statusChangeLog.save();
-
+        */
         // Update stats
         const stats = await Stats.findOne();        
 

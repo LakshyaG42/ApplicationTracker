@@ -98,8 +98,8 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                         <option value="Rejected">Rejected</option>
                     </Form.Select>
                 </Col>
-                
             </Row>
+            <div className="scrollable-list-container">
             <Row>
                 <Col>
                     <TransitionGroup component={ListGroup}>
@@ -143,6 +143,7 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                     </TransitionGroup>   
                 </Col>
             </Row>
+            </div>
         </Container>
     );
 };

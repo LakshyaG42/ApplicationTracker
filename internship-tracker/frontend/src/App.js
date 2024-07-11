@@ -9,7 +9,6 @@ import { Container } from 'react-bootstrap';
 import "./styles.css";
 
 
-
 const App = () => {
     const [applications, setApplications] = useState([]);
 
@@ -46,16 +45,15 @@ const App = () => {
 
     return (
         <Container>
-          <br></br>
           <AppContainer>
             <Stats stats = {stats}/> {}
           </AppContainer>
-          <br></br>
+
           <AppContainer>
             <h1>Internship Tracker</h1>
             <ApplicationForm setApplications={setApplications} /> {}
           </AppContainer>
-          <br></br>
+
           <AppContainer>
             <ApplicationList applications={applications} setApplications={setApplications} fetchStats={fetchStats} /> {}
           </AppContainer>
