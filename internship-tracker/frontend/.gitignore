@@ -13,9 +13,7 @@
 /build
 
 # misc
-backend/.env
 internship-tracker/backend/.env
-internship-tracker/frontend/.env
 .env
 .DS_Store
 .env.local
