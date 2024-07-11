@@ -1,7 +1,7 @@
 {
   "name": "internship-tracker",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.2.0",
+  "description": "An application to track internships and job applications",
   "main": "index.js",
   "scripts": {
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
