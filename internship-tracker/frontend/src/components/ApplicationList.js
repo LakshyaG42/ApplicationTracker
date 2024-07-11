@@ -8,17 +8,29 @@ import './ApplicationList.css';
 const ApplicationList = ({ applications, setApplications, fetchStats }) => {
     const [filterStatus, setFilterStatus] = useState('All');
     const [sortDirection, setSortDirection] = useState('desc');
-
+    const updateStats = async (userId, action) => {
+        try {
+            const response = await axios.post('http://localhost:3000/stats', { userId, action });
+            console.log(response.data.message); // Log success message
+        } catch (error) {
+            console.error('Error updating stats:', error);
+        }
+    };
     const handleStatusChange = async (id, newStatus) => {
         console.log('Changing status:', id, newStatus);
         try {
-            await axios.put(`http://localhost:3000/applications/${id}`, { currentStatus: newStatus });
+            await axios.put(`http://localhost:3000/applications/${id}`, 
+                { currentStatus: newStatus },
+                { params: { userId: localStorage.getItem('userId') } }
+            );
             console.log('Status updated successfully.');
             setApplications((prevApplications) =>
                 prevApplications.map((app) =>
                     app._id === id ? { ...app, currentStatus: newStatus } : app
                 )
             );
+            
+            updateStats(localStorage.getItem('userId'), newStatus); 
             fetchStats();
         } catch (error) {
             console.error('Error updating status:', error);

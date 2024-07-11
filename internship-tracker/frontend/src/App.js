@@ -22,32 +22,36 @@ const App = () => {
     });
 
     const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track authentication status
-    const handleLogin = () => {
+    const handleSample = () => {
+        localStorage.setItem('userId', "0");
         setIsLoggedIn(true); // Assuming user is logged in
+        fetchApplications();
+        fetchStats();
     };
 
-    const handleLogout = () => {
-        
+    const handleLogout = async () => {
+        await axios.get('http://localhost:3000/logout');
+        localStorage.setItem('userId', "0");
         setIsLoggedIn(false); // Log user out
       };
 
-      const handleGoogleLoginSuccess = async (credentialResponse) => {
-        console.log('Google login success:', credentialResponse);
-    
-        try {
-            const response = await axios.post('http://localhost:3000/auth/google', {
-                tokenId: credentialResponse.credential,
-            });
-            console.log('Server response:', response.data);
-            setIsLoggedIn(true); // Update login status in the client
-            // Fetch user-specific data after login (applications, stats, etc.)
-            console.log('User ID:', response.data.userId);
-            localStorage.setItem('userId', response.data.userId);
-            fetchApplications();
-            fetchStats();
-        } catch (error) {
-            console.error('Error logging in with Google:', error);
-        }
+    const handleGoogleLoginSuccess = async (credentialResponse) => {
+      console.log('Google login success:', credentialResponse);
+  
+      try {
+          const response = await axios.post('http://localhost:3000/auth/google', {
+              tokenId: credentialResponse.credential,
+          });
+          console.log('Server response:', response.data);
+          setIsLoggedIn(true); // Update login status in the client
+          // Fetch user-specific data after login (applications, stats, etc.)
+          console.log('User ID:', response.data.userId);
+          localStorage.setItem('userId', response.data.userId);
+          fetchApplications();
+          fetchStats();
+      } catch (error) {
+          console.error('Error logging in with Google:', error);
+      }
     };
     const handleGoogleLoginFailure = (error) => {
         console.error('Google login error:', error);
@@ -104,7 +108,7 @@ const App = () => {
             <>
               <Alert variant="danger">You are not logged in. Please log in to access the application.</Alert>
               < GoogleLoginButton onSuccess={handleGoogleLoginSuccess} onFailure={handleGoogleLoginFailure} />
-              <button onClick={handleLogin}> Login </button>
+              <button onClick={handleSample}> Sample Data </button>
             </>
         )}
           {isLoggedIn && <button onClick={handleLogout}>Logout</button>}  

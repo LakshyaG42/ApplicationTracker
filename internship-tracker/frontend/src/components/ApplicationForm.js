@@ -27,11 +27,17 @@ const ApplicationForm = ({ setApplications }) => {
     }, []);
 
     const handleSubmit = async (e) => {
+        const userId = localStorage.getItem('userId');
         e.preventDefault();
-        await axios.post('http://localhost:3000/applications', { role, company, dateApplied, currentStatus });
+        await axios.post('http://localhost:3000/applications', 
+            { role, company, dateApplied, currentStatus, user: userId },
+            { params: { userId: localStorage.getItem('userId') } }
+        );
 
         try {
-            const response = await axios.get('http://localhost:3000/applications');
+            const response = await axios.get('http://localhost:3000/applications', {
+                params: { userId: localStorage.getItem('userId') }
+            });
             setApplications(response.data);
         } catch (error) {
             console.error('Error fetching applications after adding new application:', error);
@@ -39,7 +45,9 @@ const ApplicationForm = ({ setApplications }) => {
 
         try {
             
-            const response = await axios.get('http://localhost:3000/applications');
+            const response = await axios.get('http://localhost:3000/applications', {
+                params: { userId: localStorage.getItem('userId') }
+            });
             setApplications(response.data);
 
             const existingDataResponse = await axios.get('http://localhost:3000/existing-data');

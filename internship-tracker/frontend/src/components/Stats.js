@@ -11,7 +11,9 @@ const Stats = () => {
     });
     const fetchStats = async () => {
       try {
-          const response = await axios.get('http://localhost:3000/stats');
+          const response = await axios.get('http://localhost:3000/stats', {
+            params: { userId: localStorage.getItem('userId') }
+        });
           setStats(response.data);
       } catch (error) {
           console.error('Error fetching stats:', error);
