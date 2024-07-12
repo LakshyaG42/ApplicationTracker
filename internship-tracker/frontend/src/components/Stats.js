@@ -11,7 +11,7 @@ const Stats = () => {
     });
     const fetchStats = async () => {
       try {
-          const response = await axios.get('http://localhost:3000/stats', {
+          const response = await axios.get('https://lakshyag42.alwaysdata.net/stats', {
             params: { userId: localStorage.getItem('userId') }
         });
           setStats(response.data);

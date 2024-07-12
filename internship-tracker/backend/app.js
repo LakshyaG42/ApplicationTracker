@@ -13,6 +13,10 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 require('dotenv').config();
 
+const port = process.env.PORT || 8100;  // Use the PORT environment variable or default to 8100
+const ip = process.env.IP || '::';      // Use the IP environment variable or default to '::'
+
+
 //const StatusChangeLog = require('./models/StatusChangeLog');
 
 const app = express();
@@ -27,9 +31,13 @@ app.use(session({
 
 password = encodeURIComponent(`${process.env.MONOGO_DB_PASSWORD}`)
 const connectionUri = `mongodb+srv://lakshyagour42:${password}@application-tracker.szxpwak.mongodb.net/internshipTracker` //`mongodb+srv://lakshyagour42:<${password}@application-tracker.szxpwak.mongodb.net/?retryWrites=true&w=majority&appName=Application-Tracker`;
-console.log(connectionUri)
 //mongoose.connect('mongodb://localhost:27017/internshipTracker', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect(connectionUri, { useNewUrlParser: true, useUnifiedTopology: true });
+try {
+    mongoose.connect(connectionUri, { useNewUrlParser: true, useUnifiedTopology: true });
+} catch (error) {
+    console.error('Error connecting to MongoDB:', error);
+}
+
 
 const initializeStats = async (userId) => {
     try {
@@ -68,7 +76,7 @@ app.use(passport.session());
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3000/auth/google/callback'
+    callbackURL: 'https://lakshyag42.alwaysdata.net/auth/google/callback'
   },
   async (accessToken, refreshToken, profile, done) => {
     try {
@@ -104,7 +112,7 @@ app.get('/auth/google', async (req, res) => {
       const response = await axios.get('https://accounts.google.com/o/oauth2/v2/auth', {
         params: {
           response_type: 'code',
-          redirect_uri: 'http://localhost:3000/auth/google/callback',
+          redirect_uri: 'https://lakshyag42.alwaysdata.net/auth/google/callback',
           client_id: '854392932175-a79ndhc4uc09bnipvf0a0088q8kgubjb.apps.googleusercontent.com'
         }
       });
@@ -323,51 +331,14 @@ app.get('/stats', async (req, res) => {
     }
 });
 
-
 /*
-app.post('/stats/update', async (req, res) => {
-    const { userId, action } = req.body;
-
-    try {
-        let stats = await Stats.findOne({ user: userId });
-
-        if (!stats) {
-            // If stats do not exist, initialize them (you can reuse your existing initializeStats function)
-            await initializeStats(userId);
-            stats = await Stats.findOne({ user: userId });
-        }
-
-        // Perform actions based on the request
-        switch (action) {
-            case 'Online Assessment':
-                stats.onlineassessments++;
-                break;
-            case 'Interview Scheduled':
-                stats.interviews++;
-                break;
-            case 'Offer Received':
-                stats.offersreceived++;
-                break;
-            // Add more cases for other actions as needed
-            default:
-                return res.status(400).json({ error: 'Invalid action' });
-        }
-
-        // Save updated stats
-        await stats.save();
-
-        res.status(200).json({ message: 'Stats updated successfully' });
-    } catch (error) {
-        console.error('Error updating stats:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-*/
-
-
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
+*/ 
+app.listen(port, ip, () => {
+    console.log(`Server running at http://${ip}:${port}/`);
+  });
 
 process.on('uncaughtException', err => {
     console.error(`There was an uncaught error: ${err}`);

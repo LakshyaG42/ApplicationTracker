@@ -15,7 +15,7 @@ const ApplicationForm = ({ setApplications }) => {
         // Fetch existing roles and companies when the component mounts
         const fetchExistingData = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/existing-data'); // Replace with your API endpoint
+                const response = await axios.get('https://lakshyag42.alwaysdata.net/existing-data'); // Replace with your API endpoint
                 setExistingRoles(response.data.roles);
                 setExistingCompanies(response.data.companies);
             } catch (error) {
@@ -29,13 +29,13 @@ const ApplicationForm = ({ setApplications }) => {
     const handleSubmit = async (e) => {
         const userId = localStorage.getItem('userId');
         e.preventDefault();
-        await axios.post('http://localhost:3000/applications', 
+        await axios.post('https://lakshyag42.alwaysdata.net/applications', 
             { role, company, dateApplied, currentStatus, user: userId },
             { params: { userId: localStorage.getItem('userId') } }
         );
 
         try {
-            const response = await axios.get('http://localhost:3000/applications', {
+            const response = await axios.get('https://lakshyag42.alwaysdata.net/applications', {
                 params: { userId: localStorage.getItem('userId') }
             });
             setApplications(response.data);
@@ -45,12 +45,12 @@ const ApplicationForm = ({ setApplications }) => {
 
         try {
             
-            const response = await axios.get('http://localhost:3000/applications', {
+            const response = await axios.get('https://lakshyag42.alwaysdata.net/applications', {
                 params: { userId: localStorage.getItem('userId') }
             });
             setApplications(response.data);
 
-            const existingDataResponse = await axios.get('http://localhost:3000/existing-data');
+            const existingDataResponse = await axios.get('https://lakshyag42.alwaysdata.net/existing-data');
             setExistingRoles(existingDataResponse.data.roles);
             setExistingCompanies(existingDataResponse.data.companies);
         } catch (error) {
