@@ -25,7 +25,11 @@ app.use(session({
     saveUninitialized: false
 }));
 
-mongoose.connect('mongodb://localhost:27017/internshipTracker', { useNewUrlParser: true, useUnifiedTopology: true });
+password = encodeURIComponent(`${process.env.MONOGO_DB_PASSWORD}`)
+const connectionUri = `mongodb+srv://lakshyagour42:${password}@application-tracker.szxpwak.mongodb.net/internshipTracker` //`mongodb+srv://lakshyagour42:<${password}@application-tracker.szxpwak.mongodb.net/?retryWrites=true&w=majority&appName=Application-Tracker`;
+console.log(connectionUri)
+//mongoose.connect('mongodb://localhost:27017/internshipTracker', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(connectionUri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const initializeStats = async (userId) => {
     try {
