@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 
 
+const WEBSITE_URL = window.env.NODE_ENV === 'production' ? window.env.WEBSITE_URL_PROD : window.env.WEBSITE_URL_DEV;
+
 const ApplicationForm = ({ setApplications }) => {
     const [role, setRole] = useState('');
     const [company, setCompany] = useState('');
@@ -10,12 +12,13 @@ const ApplicationForm = ({ setApplications }) => {
     const [currentStatus, setCurrentStatus] = useState('Applied');
     const [existingRoles, setExistingRoles] = useState([]);
     const [existingCompanies, setExistingCompanies] = useState([]);
+    const [userId] = useState(localStorage.getItem('userId'));
 
     useEffect(() => {
         // Fetch existing roles and companies when the component mounts
         const fetchExistingData = async () => {
             try {
-                const response = await axios.get('https://lakshyag42.alwaysdata.net/existing-data'); // Replace with your API endpoint
+                const response = await axios.get(`${WEBSITE_URL}existing-data`); // Replace with your API endpoint
                 setExistingRoles(response.data.roles);
                 setExistingCompanies(response.data.companies);
             } catch (error) {
@@ -29,13 +32,13 @@ const ApplicationForm = ({ setApplications }) => {
     const handleSubmit = async (e) => {
         const userId = localStorage.getItem('userId');
         e.preventDefault();
-        await axios.post('https://lakshyag42.alwaysdata.net/applications', 
+        await axios.post(`${WEBSITE_URL}applications`, 
             { role, company, dateApplied, currentStatus, user: userId },
             { params: { userId: localStorage.getItem('userId') } }
         );
 
         try {
-            const response = await axios.get('https://lakshyag42.alwaysdata.net/applications', {
+            const response = await axios.get(`${WEBSITE_URL}applications`, {
                 params: { userId: localStorage.getItem('userId') }
             });
             setApplications(response.data);
@@ -45,12 +48,12 @@ const ApplicationForm = ({ setApplications }) => {
 
         try {
             
-            const response = await axios.get('https://lakshyag42.alwaysdata.net/applications', {
+            const response = await axios.get(`${WEBSITE_URL}applications`, {
                 params: { userId: localStorage.getItem('userId') }
             });
             setApplications(response.data);
 
-            const existingDataResponse = await axios.get('https://lakshyag42.alwaysdata.net/existing-data');
+            const existingDataResponse = await axios.get(`${WEBSITE_URL}existing-data`);
             setExistingRoles(existingDataResponse.data.roles);
             setExistingCompanies(existingDataResponse.data.companies);
         } catch (error) {
@@ -120,7 +123,7 @@ const ApplicationForm = ({ setApplications }) => {
                 </Row>
                 <Row>
                     <Col className="d-flex justify-content-end mt-3">
-                            <Button className="d-flex justify-content-end mt-3" variant="primary" type="submit" >
+                            <Button className="d-flex justify-content-end mt-3" variant="primary" type="submit" disabled={userId === '0'}>
                             Add Application
                         </Button>
                     </Col>

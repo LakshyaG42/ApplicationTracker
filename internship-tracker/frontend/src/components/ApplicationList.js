@@ -5,12 +5,15 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import FlipMove from 'react-flip-move';
 import './ApplicationList.css';
 
+
+const WEBSITE_URL = window.env.NODE_ENV === 'production' ? window.env.WEBSITE_URL_PROD : window.env.WEBSITE_URL_DEV;
+
 const ApplicationList = ({ applications, setApplications, fetchStats }) => {
     const [filterStatus, setFilterStatus] = useState('All');
     const [sortDirection, setSortDirection] = useState('desc');
     const updateStats = async (userId, action) => {
         try {
-            const response = await axios.post('https://lakshyag42.alwaysdata.net/stats', { userId, action });
+            const response = await axios.post(`${WEBSITE_URL}stats`, { userId, action });
             console.log(response.data.message); // Log success message
         } catch (error) {
             console.error('Error updating stats:', error);
@@ -19,7 +22,7 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
     const handleStatusChange = async (id, newStatus) => {
         console.log('Changing status:', id, newStatus);
         try {
-            await axios.put(`https://lakshyag42.alwaysdata.net/applications/${id}`, 
+            await axios.put(`${WEBSITE_URL}applications/${id}`, 
                 { currentStatus: newStatus },
                 { params: { userId: localStorage.getItem('userId') } }
             );
@@ -39,7 +42,7 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`https://lakshyag42.alwaysdata.net/applications/${id}`);
+            await axios.delete(`${WEBSITE_URL}applications/${id}`);
             const updatedApplications = applications.filter(app => app._id !== id);
             setApplications(updatedApplications);
             fetchStats(); 

@@ -15,7 +15,7 @@ require('dotenv').config();
 
 const port = process.env.PORT || 8100;  // Use the PORT environment variable or default to 8100
 const ip = process.env.IP || '::';      // Use the IP environment variable or default to '::'
-
+const WEBSITE_URL = process.env.NODE_ENV === 'production' ? process.env.WEBSITE_URL_PROD : process.env.WEBSITE_URL_DEV;
 
 //const StatusChangeLog = require('./models/StatusChangeLog');
 
@@ -76,7 +76,7 @@ app.use(passport.session());
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'https://lakshyag42.alwaysdata.net/auth/google/callback'
+    callbackURL: `${WEBSITE_URL}auth/google/callback`
   },
   async (accessToken, refreshToken, profile, done) => {
     try {
@@ -112,7 +112,7 @@ app.get('/auth/google', async (req, res) => {
       const response = await axios.get('https://accounts.google.com/o/oauth2/v2/auth', {
         params: {
           response_type: 'code',
-          redirect_uri: 'https://lakshyag42.alwaysdata.net/auth/google/callback',
+          redirect_uri: `${WEBSITE_URL}auth/google/callback`,
           client_id: '854392932175-a79ndhc4uc09bnipvf0a0088q8kgubjb.apps.googleusercontent.com'
         }
       });
