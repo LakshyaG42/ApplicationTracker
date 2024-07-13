@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Row, Col } from 'react-bootstrap';
 
-
-const WEBSITE_URL = window.env.NODE_ENV === 'production' ? window.env.WEBSITE_URL_PROD : window.env.WEBSITE_URL_DEV;
-
 const Stats = () => {
     const [stats, setStats] = useState({
         onlineassessments: 0,
@@ -14,7 +11,7 @@ const Stats = () => {
     });
     const fetchStats = async () => {
       try {
-          const response = await axios.get(`${WEBSITE_URL}stats`, {
+          const response = await axios.get('https://lakshyag42.alwaysdata.net/stats', {
             params: { userId: localStorage.getItem('userId') }
         });
           setStats(response.data);

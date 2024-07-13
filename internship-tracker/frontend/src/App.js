@@ -11,7 +11,6 @@ import GoogleLoginButton from './components/GoogleLoginButton';
 import styled from 'styled-components';
 
 
-const WEBSITE_URL = window.env.NODE_ENV === 'production' ? window.env.WEBSITE_URL_PROD : window.env.WEBSITE_URL_DEV;
 const ButtonContainer = styled.div`
   display: flex;
   gap: 10px; /* Adjust the gap to control padding between buttons */
@@ -41,7 +40,7 @@ const App = () => {
     };
 
     const handleLogout = async () => {
-        await axios.get(`${WEBSITE_URL}logout`);
+        await axios.get('https://lakshyag42.alwaysdata.net/logout');
         localStorage.setItem('userId', "0");
         setIsLoggedIn(false); // Log user out
       };
@@ -50,7 +49,7 @@ const App = () => {
       console.log('Google login success:', credentialResponse);
   
       try {
-          const response = await axios.post(`${WEBSITE_URL}auth/google`, {
+          const response = await axios.post('https://lakshyag42.alwaysdata.net/auth/google', {
               tokenId: credentialResponse.credential,
           });
           console.log('Server response:', response.data);
@@ -72,7 +71,7 @@ const App = () => {
 
     const fetchApplications = async () => {
       try {
-          const response = await axios.get(`${WEBSITE_URL}applications`, {
+          const response = await axios.get('https://lakshyag42.alwaysdata.net/applications', {
             params: { userId: localStorage.getItem('userId') }
         });
           setApplications(response.data);
@@ -82,7 +81,7 @@ const App = () => {
     };
     const fetchStats = async () => {
         try {
-            const response = await axios.get(`${WEBSITE_URL}stats`, {
+            const response = await axios.get('https://lakshyag42.alwaysdata.net/stats', {
               params: { userId: localStorage.getItem('userId') }
           });
             setStats(response.data);
