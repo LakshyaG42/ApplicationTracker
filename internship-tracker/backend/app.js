@@ -331,11 +331,31 @@ app.get('/stats', async (req, res) => {
     }
 });
 
-/*
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+/* Notes API Calls */
+app.put('/applications/:id/notes', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { notes } = req.body;
+        const application = await Application.findByIdAndUpdate(id, { notes }, { new: true });
+        res.status(200).json(application);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to update notes' });
+    }
 });
-*/ 
+
+app.get('/applications/:id/notes', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const application = await Application.findById(id);
+        res.status(200).json(application.notes);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch notes' });
+    }
+});
+
+
+
+
 app.listen(port, ip, () => {
     console.log(`Server running at http://${ip}:${port}/`);
   });

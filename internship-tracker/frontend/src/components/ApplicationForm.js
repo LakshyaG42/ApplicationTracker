@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 
 const ApplicationForm = ({ setApplications }) => {
@@ -10,6 +10,7 @@ const ApplicationForm = ({ setApplications }) => {
     const [currentStatus, setCurrentStatus] = useState('Applied');
     const [existingRoles, setExistingRoles] = useState([]);
     const [existingCompanies, setExistingCompanies] = useState([]);
+    const [userId] = useState(localStorage.getItem('userId'));
 
     useEffect(() => {
         // Fetch existing roles and companies when the component mounts
@@ -25,6 +26,12 @@ const ApplicationForm = ({ setApplications }) => {
 
         fetchExistingData();
     }, []);
+
+    const renderTooltip = (props) => (
+        <Tooltip id="button-tooltip" {...props}>
+            Permission to alter the sample data not granted
+        </Tooltip>
+    );
 
     const handleSubmit = async (e) => {
         const userId = localStorage.getItem('userId');
@@ -119,10 +126,33 @@ const ApplicationForm = ({ setApplications }) => {
                     </Col>
                 </Row>
                 <Row>
-                    <Col className="d-flex justify-content-end mt-3">
-                            <Button className="d-flex justify-content-end mt-3" variant="primary" type="submit" >
-                            Add Application
-                        </Button>
+                    <Col className="d-flex justify-content-end mt-2">
+                        {userId === '0' ? (
+                                <OverlayTrigger
+                                    placement="top"
+                                    overlay={renderTooltip}
+                                >
+                                    <span className="d-inline-block">
+                                        <Button 
+                                            className="d-flex justify-content-end mt-2" 
+                                            variant="primary" 
+                                            type="submit" 
+                                            disabled 
+                                            style={{ pointerEvents: 'none' }}
+                                        >
+                                            Add Application
+                                        </Button>
+                                    </span>
+                                </OverlayTrigger>
+                            ) : (
+                                <Button 
+                                    className="d-flex justify-content-end mt-2" 
+                                    variant="primary" 
+                                    type="submit"
+                                >
+                                    Add Application
+                                </Button>
+                            )}
                     </Col>
                 </Row>
                 

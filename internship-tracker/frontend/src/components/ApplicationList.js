@@ -3,11 +3,55 @@ import axios from 'axios';
 import { ListGroup, Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import FlipMove from 'react-flip-move';
+import NotesPopup from './NotesPopup';
 import './ApplicationList.css';
+import styled from 'styled-components';
+
+const Col2 = styled(Col)`
+    padding-right: 5px;
+    padding-left: 5px;
+`   
 
 const ApplicationList = ({ applications, setApplications, fetchStats }) => {
     const [filterStatus, setFilterStatus] = useState('All');
     const [sortDirection, setSortDirection] = useState('desc');
+    const [showNotesPopup, setShowNotesPopup] = useState(false);
+    const [currentNotes, setCurrentNotes] = useState('');
+    const [currentAppId, setCurrentAppId] = useState(null);
+
+    /** Notes Functions */
+
+    const handleNotesOpen = async (appId) => {
+        console.log('Opening notes for application:', appId);
+        setCurrentAppId(appId);
+        try {
+            const response = await axios.get(`https://lakshyag42.alwaysdata.net/applications/${appId}/notes`);
+            console.log('Notes:', response.data);
+            setCurrentNotes(response.data);
+        } catch (error) {
+            console.error('Error fetching notes:', error);
+        }
+        setShowNotesPopup(true);
+    };
+
+    const handleNotesSave = async (notes) => {
+        try {
+            await axios.put(`https://lakshyag42.alwaysdata.net/applications/${currentAppId}/notes`, { notes });
+            setApplications((prevApplications) =>
+                prevApplications.map((app) =>
+                    app._id === currentAppId ? { ...app, notes } : app
+                )
+            );
+        } catch (error) {
+            console.error('Error saving notes:', error);
+        }
+    };
+
+
+
+    /** Notes Functions End */
+
+
     const updateStats = async (userId, action) => {
         try {
             const response = await axios.post('https://lakshyag42.alwaysdata.net/stats', { userId, action });
@@ -130,7 +174,7 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                                             <Col>
                                                 {app.role} at {app.company} - Applied on {new Date(app.dateApplied).toUTCString().substring(4,16)}
                                             </Col>
-                                            <Col xs="4">
+                                            <Col2 xs="3">
                                                 <Form.Select
                                                     value={app.currentStatus}
                                                     onChange={(e) => handleStatusChange(app._id, e.target.value)}
@@ -143,10 +187,13 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                                                     <option value="Offer Accepted">Offer Accepted</option>
                                                     <option value="Rejected">Rejected</option>
                                                 </Form.Select>
-                                            </Col>
-                                            <Col xs="1">
+                                            </Col2>
+                                            <Col2 xs="auto">
+                                                <Button variant="secondary" onClick={() => handleNotesOpen(app._id)}>Notes</Button>
+                                            </Col2>
+                                            <Col2 xs="auto">
                                                 <Button variant="danger" onClick={() => handleDelete(app._id)}>Delete</Button>
-                                            </Col>
+                                            </Col2>
                                         </Row>
                                     </ListGroup.Item>
                                 </CSSTransition>
@@ -156,6 +203,12 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                 </Col>
             </Row>
             </div>
+            <NotesPopup
+                show={showNotesPopup}
+                handleClose={() => setShowNotesPopup(false)}
+                saveNotes={handleNotesSave}
+                initialNotes={currentNotes}
+            />
         </Container>
     );
 };
