@@ -6,6 +6,7 @@ import FlipMove from 'react-flip-move';
 import NotesPopup from './NotesPopup';
 import './ApplicationList.css';
 import styled from 'styled-components';
+import ReactGA from 'react-ga';
 
 const Col2 = styled(Col)`
     padding-right: 5px;
@@ -22,6 +23,10 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
     /** Notes Functions */
 
     const handleNotesOpen = async (appId) => {
+        ReactGA.event({
+            category: 'User',
+            action: 'Clicked on Google Login Button and Succeeded'
+        });
         console.log('Opening notes for application:', appId);
         setCurrentAppId(appId);
         try {

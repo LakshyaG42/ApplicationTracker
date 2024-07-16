@@ -34,6 +34,10 @@ const ApplicationForm = ({ setApplications }) => {
     );
 
     const handleSubmit = async (e) => {
+        ReactGA.event({
+            category: 'User',
+            action: 'Added a new application'
+        });
         const userId = localStorage.getItem('userId');
         e.preventDefault();
         await axios.post('https://lakshyag42.alwaysdata.net/applications', 
