@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import ReactGA from 'react-ga';
 import axios from 'axios';
 import ApplicationForm from './components/ApplicationForm';
 import ApplicationList from './components/ApplicationList';
 import AppContainer from './components/AppContainer'; 
+import { useLocation } from 'react-router-dom';
 import Stats from './components/Stats';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Alert, Button, Row, Col } from 'react-bootstrap';
@@ -22,6 +24,7 @@ const CustomRow = styled(Row)`
   `;
 const App = () => {
     const [applications, setApplications] = useState([]);
+    const location = useLocation();
 
     const [stats, setStats] = useState({
       onlineassessments: 0,
@@ -47,7 +50,10 @@ const App = () => {
 
     const handleGoogleLoginSuccess = async (credentialResponse) => {
       console.log('Google login success:', credentialResponse);
-  
+      ReactGA.event({
+        category: 'User',
+        action: 'Clicked on Google Login Button and Succeeded'
+      });
       try {
           const response = await axios.post('https://lakshyag42.alwaysdata.net/auth/google', {
               tokenId: credentialResponse.credential,
@@ -64,6 +70,10 @@ const App = () => {
       }
     };
     const handleGoogleLoginFailure = (error) => {
+      ReactGA.event({
+        category: 'User',
+        action: 'Clicked on Google Login Button and Failed'
+      });
         console.error('Google login error:', error);
         // Handle login failure (e.g., display error message)
     };
@@ -93,7 +103,8 @@ const App = () => {
     useEffect(() => {
         fetchApplications();
         fetchStats();
-    }, []);
+        ReactGA.pageview(location.pathname + location.search);
+    }, [location]);
 
     return (
         <Container>

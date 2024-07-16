@@ -1,8 +1,8 @@
 /* styles.css */
 .background {
     background-image: url("/src/assets/backgroundimage.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
+    background-blend-mode: multiply;
+
 }
 
 .applicationTxt {
