@@ -1,6 +1,6 @@
 # Application Tracker
 
-This is a simple application tracker to help keep track of job applications. Feel free to check out my [website](https://lakshyag42.github.io/application-tracker.html) to learn more
+The Application Tracker is a web-based tool designed to help users manage their job applications efficiently. It allows users to track application statuses, sort and filter applications, and add detailed notes. Key features include status updates, statistics tracking, and a user-friendly interface with colorful status indicators for quick insights. Feel free to check out my [website](https://lakshyag42.github.io/application-tracker.html) to learn more
 
 ## Changelog
 
