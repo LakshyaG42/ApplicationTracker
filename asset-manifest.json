@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/ApplicationTracker/static/css/main.f54f0bf7.css",
-    "main.js": "/ApplicationTracker/static/js/main.fc9d5afd.js",
+    "main.css": "/ApplicationTracker/static/css/main.a61904a6.css",
+    "main.js": "/ApplicationTracker/static/js/main.cbef55f1.js",
     "static/js/453.d855a71b.chunk.js": "/ApplicationTracker/static/js/453.d855a71b.chunk.js",
     "static/media/backgroundimage.jpg": "/ApplicationTracker/static/media/backgroundimage.9d26f85d24ad7d5b2e4e.jpg",
     "index.html": "/ApplicationTracker/index.html",
-    "main.f54f0bf7.css.map": "/ApplicationTracker/static/css/main.f54f0bf7.css.map",
-    "main.fc9d5afd.js.map": "/ApplicationTracker/static/js/main.fc9d5afd.js.map",
+    "main.a61904a6.css.map": "/ApplicationTracker/static/css/main.a61904a6.css.map",
+    "main.cbef55f1.js.map": "/ApplicationTracker/static/js/main.cbef55f1.js.map",
     "453.d855a71b.chunk.js.map": "/ApplicationTracker/static/js/453.d855a71b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f54f0bf7.css",
-    "static/js/main.fc9d5afd.js"
+    "static/css/main.a61904a6.css",
+    "static/js/main.cbef55f1.js"
   ]
 }
