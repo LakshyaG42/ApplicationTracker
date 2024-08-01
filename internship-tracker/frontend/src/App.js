@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import ReactGA from 'react-ga';
+
+
 import axios from 'axios';
 import ApplicationForm from './components/ApplicationForm';
 import ApplicationList from './components/ApplicationList';
 import AppContainer from './components/AppContainer'; 
-import { useLocation } from 'react-router-dom';
 import Stats from './components/Stats';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Alert, Button, Row, Col } from 'react-bootstrap';
@@ -24,7 +24,6 @@ const CustomRow = styled(Row)`
   `;
 const App = () => {
     const [applications, setApplications] = useState([]);
-    const location = useLocation();
 
     const [stats, setStats] = useState({
       onlineassessments: 0,
@@ -43,19 +42,15 @@ const App = () => {
     };
 
     const handleLogout = async () => {
-        await axios.get('https://lakshyag42.alwaysdata.net/logout');
+        await axios.get('http://localhost:3000/logout');
         localStorage.setItem('userId', "0");
         setIsLoggedIn(false); // Log user out
       };
 
     const handleGoogleLoginSuccess = async (credentialResponse) => {
       console.log('Google login success:', credentialResponse);
-      ReactGA.event({
-        category: 'User',
-        action: 'Clicked on Google Login Button and Succeeded'
-      });
       try {
-          const response = await axios.post('https://lakshyag42.alwaysdata.net/auth/google', {
+          const response = await axios.post('http://localhost:3000/auth/google', {
               tokenId: credentialResponse.credential,
           });
           console.log('Server response:', response.data);
@@ -70,10 +65,6 @@ const App = () => {
       }
     };
     const handleGoogleLoginFailure = (error) => {
-      ReactGA.event({
-        category: 'User',
-        action: 'Clicked on Google Login Button and Failed'
-      });
         console.error('Google login error:', error);
         // Handle login failure (e.g., display error message)
     };
@@ -81,7 +72,7 @@ const App = () => {
 
     const fetchApplications = async () => {
       try {
-          const response = await axios.get('https://lakshyag42.alwaysdata.net/applications', {
+          const response = await axios.get('http://localhost:3000/applications', {
             params: { userId: localStorage.getItem('userId') }
         });
           setApplications(response.data);
@@ -91,7 +82,7 @@ const App = () => {
     };
     const fetchStats = async () => {
         try {
-            const response = await axios.get('https://lakshyag42.alwaysdata.net/stats', {
+            const response = await axios.get('http://localhost:3000/stats', {
               params: { userId: localStorage.getItem('userId') }
           });
             setStats(response.data);
@@ -101,18 +92,24 @@ const App = () => {
     };
 
     useEffect(() => {
-        fetchApplications();
-        fetchStats();
-        ReactGA.pageview(location.pathname + location.search);
-    }, [location]);
+      if (isLoggedIn) {
+          console.log('User is logged in. Fetching data...');
+          fetchApplications();
+          fetchStats();
+      }
+  }, [isLoggedIn]);
 
+    useEffect(() => {
+      fetchStats();
+    }, [applications]);
+    
     return (
         <Container>
           {/* Conditional rendering based on isLoggedIn state */}
           {isLoggedIn ? (
             <>
               <AppContainer>
-                <Stats stats = {stats}/> {}
+                <Stats stat = {stats}/> {}
               </AppContainer>
 
               <AppContainer>

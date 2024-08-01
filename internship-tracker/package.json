@@ -10,7 +10,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "echo \"!!!IMPORTANT!!! Please use 'npm run setup' also if you haven't already !!!IMPORTANT!!!\"",
     "setup": "cd backend && npm install && cd ../frontend && npm install",
-    "build": "cd frontend && npm run build"
+    "build": "cd frontend && npm run build",
+    "deploy": "cd frontend && npm run deploy"
   },
   "keywords": [],
   "author": "Lakshya Gour",
