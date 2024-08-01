@@ -9,7 +9,6 @@ import Stats from './components/Stats';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Alert, Button, Row, Col } from 'react-bootstrap';
 import "./styles.css";
-import GoogleLoginButton from './components/GoogleLoginButton';
 import styled from 'styled-components';
 import Login from './components/Login';
 
@@ -104,10 +103,10 @@ const App = () => {
     }, [applications]);
     
     return (
-        <>
+      <Container>
           {/* Conditional rendering based on isLoggedIn state */}
           {isLoggedIn ? (
-            <Container>
+            <>
               <AppContainer>
                 <Stats stat = {stats}/> {}
               </AppContainer>
@@ -127,8 +126,7 @@ const App = () => {
               <AppContainer>
                 <ApplicationList applications={applications} setApplications={setApplications} fetchStats={fetchStats} /> {}
               </AppContainer>
-
-            </Container>
+            </>
           ) : (
             <>
               {/* <AppContainer>
@@ -144,7 +142,7 @@ const App = () => {
             </>
         )}
            
-        </>
+        </Container>
     );
 };
 

@@ -20,8 +20,8 @@ const Login = ({ onSuccess, onFailure, onGoogleSuccess, onGoogleFailure }) => {
 
 
   return (
-    <div className={`container ${isActive ? 'active' : ''}`} id="container">
-      <div className="form-container sign-up">
+    <div className={`LoginContainer ${isActive ? 'active' : ''}`} id="LoginContainer">
+      <div className="form-LoginContainer sign-up">
         <form onSubmit={handleSignup}>
           <h1>Create Account</h1>
           <div className="social-icons">
@@ -38,7 +38,7 @@ const Login = ({ onSuccess, onFailure, onGoogleSuccess, onGoogleFailure }) => {
           <button type="submit">Sign Up</button>
         </form>
       </div>
-      <div className="form-container sign-in">
+      <div className="form-LoginContainer sign-in">
         <form>
           <h1 className='header' >Welcome Back! Sign In</h1>
           <div className="social-icons">
@@ -58,7 +58,7 @@ const Login = ({ onSuccess, onFailure, onGoogleSuccess, onGoogleFailure }) => {
           <button type="submit">Sign in</button>
         </form>
       </div>
-      <div className="toggle-container">
+      <div className="toggle-LoginContainer">
         <div className="toggle">
           <div className="toggle-panel toggle-left">
             <h1>Welcome Back!</h1>
