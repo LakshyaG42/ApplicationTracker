@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
+import { Modal, Button, Form, Row, Col, Spinner  } from 'react-bootstrap';
 import axios from 'axios';
 
 const ImportCSV = ({ show, handleClose, setApplications }) => {
@@ -17,6 +17,7 @@ const ImportCSV = ({ show, handleClose, setApplications }) => {
         offerAccepted: '',
         rejected: ''
     });
+    const [loading, setLoading] = useState(false);
     
     const handleFileChange = (e) => {
         setCsvFile(e.target.files[0]);
@@ -31,6 +32,7 @@ const ImportCSV = ({ show, handleClose, setApplications }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         const formData = new FormData();
         formData.append('csvFile', csvFile);
         formData.append('roleColumn', roleColumn);
@@ -63,6 +65,8 @@ const ImportCSV = ({ show, handleClose, setApplications }) => {
             } else {
                 alert('An unexpected error occurred');
             }
+        } finally {
+            setLoading(false); // Set loading state to false
         }
     };
 
@@ -199,8 +203,21 @@ const ImportCSV = ({ show, handleClose, setApplications }) => {
                             </Col>
                         </Row>
                     </Form.Group>
-                    <Button variant="primary" type="submit">
-                        Import CSV
+                    <Button variant="primary" type="submit" disabled={loading}>
+                        {loading ? (
+                            <>
+                                <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />
+                                {' '}Importing...
+                            </>
+                        ) : (
+                            'Import CSV'
+                        )}
                     </Button>
                 </Form>
             </Modal.Body>
