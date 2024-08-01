@@ -42,7 +42,7 @@ const App = () => {
     };
 
     const handleLogout = async () => {
-        await axios.get('http://localhost:3000/logout');
+        await axios.get('https://lakshyag42.alwaysdata.net/logout');
         localStorage.setItem('userId', "0");
         setIsLoggedIn(false); // Log user out
       };
@@ -50,7 +50,7 @@ const App = () => {
     const handleGoogleLoginSuccess = async (credentialResponse) => {
       console.log('Google login success:', credentialResponse);
       try {
-          const response = await axios.post('http://localhost:3000/auth/google', {
+          const response = await axios.post('https://lakshyag42.alwaysdata.net/auth/google', {
               tokenId: credentialResponse.credential,
           });
           console.log('Server response:', response.data);
@@ -72,7 +72,7 @@ const App = () => {
 
     const fetchApplications = async () => {
       try {
-          const response = await axios.get('http://localhost:3000/applications', {
+          const response = await axios.get('https://lakshyag42.alwaysdata.net/applications', {
             params: { userId: localStorage.getItem('userId') }
         });
           setApplications(response.data);
@@ -82,7 +82,7 @@ const App = () => {
     };
     const fetchStats = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/stats', {
+            const response = await axios.get('https://lakshyag42.alwaysdata.net/stats', {
               params: { userId: localStorage.getItem('userId') }
           });
             setStats(response.data);

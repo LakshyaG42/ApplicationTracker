@@ -77,7 +77,7 @@ app.use(passport.session());
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3000/auth/google/callback'
+    callbackURL: 'https://lakshyag42.alwaysdata.net/auth/google/callback'
   },
   async (accessToken, refreshToken, profile, done) => {
     try {
@@ -113,7 +113,7 @@ app.get('/auth/google', async (req, res) => {
       const response = await axios.get('https://accounts.google.com/o/oauth2/v2/auth', {
         params: {
           response_type: 'code',
-          redirect_uri: 'http://localhost:3000/auth/google/callback',
+          redirect_uri: 'https://lakshyag42.alwaysdata.net/auth/google/callback',
           client_id: '854392932175-a79ndhc4uc09bnipvf0a0088q8kgubjb.apps.googleusercontent.com'
         }
       });
@@ -451,7 +451,7 @@ app.post('/import-csv', upload.single('csvFile'), async (req, res) => {
 
 
 app.listen(3000, () => {
-    console.log('Server running at http://localhost:3000/');
+    console.log('Server running at https://lakshyag42.alwaysdata.net/');
 });
 
 // app.listen(port, ip, () => {
