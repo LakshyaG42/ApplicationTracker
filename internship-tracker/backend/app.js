@@ -10,14 +10,15 @@ const Stats = require('./models/Stats');
 const User = require('./models/User');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
-
 require('dotenv').config();
 
 const port = process.env.PORT || 8100;  // Use the PORT environment variable or default to 8100
 const ip = process.env.IP || '::';      // Use the IP environment variable or default to '::'
 
-
-//const StatusChangeLog = require('./models/StatusChangeLog');
+const multer = require('multer');
+const fs = require('fs');
+const csvParser = require('csv-parser');
+const upload = multer({ dest: 'uploads/' });
 
 const app = express();
 app.use(express.json());
@@ -76,7 +77,7 @@ app.use(passport.session());
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'https://lakshyag42.alwaysdata.net/auth/google/callback'
+    callbackURL: 'http://localhost:3000/auth/google/callback'
   },
   async (accessToken, refreshToken, profile, done) => {
     try {
@@ -112,7 +113,7 @@ app.get('/auth/google', async (req, res) => {
       const response = await axios.get('https://accounts.google.com/o/oauth2/v2/auth', {
         params: {
           response_type: 'code',
-          redirect_uri: 'https://lakshyag42.alwaysdata.net/auth/google/callback',
+          redirect_uri: 'http://localhost:3000/auth/google/callback',
           client_id: '854392932175-a79ndhc4uc09bnipvf0a0088q8kgubjb.apps.googleusercontent.com'
         }
       });
@@ -187,7 +188,7 @@ app.post('/auth/google', async (req, res) => {
 // LOGIN THINGS END
 
 const updateStats = async (userId, newStatus) => {
-    console.log('Updating stats for user:', userId);
+    
     const stats = await Stats.findOne({ user: userId });
     if (!stats) {
         initializeStats(userId);
@@ -203,6 +204,7 @@ const updateStats = async (userId, newStatus) => {
 };
 
 app.post('/applications', async (req, res) => {
+    console.log('Creating new application:', req.body);
     const { role, company, dateApplied, currentStatus } = req.body;
     const userId = req.query.userId;
     try {
@@ -218,6 +220,7 @@ app.post('/applications', async (req, res) => {
 
 app.get('/applications', async (req, res) => {
     const userId = req.query.userId;
+    console.log('Fetching /applications for user:', userId);
     try {
         const applications = await Application.find({ user: userId });
         res.status(200).json(applications);
@@ -232,6 +235,7 @@ app.put('/applications/:id', async (req, res) => {
     const { currentStatus } = req.body;
     const userId = req.query.userId;
 
+    console.log('Updating status for application:', id, 'to', currentStatus);
     try {
         const application = await Application.findById(id);
         if (!application) {
@@ -274,6 +278,7 @@ app.put('/applications/:id', async (req, res) => {
 });
 
 app.get('/existing-data', async (req, res) => {
+    
     try {
         const existingRoles = await Application.distinct('role');
         const existingCompanies = await Application.distinct('company');
@@ -286,7 +291,7 @@ app.get('/existing-data', async (req, res) => {
 
 app.delete('/applications/:id', async (req, res) => {
     const { id } = req.params;
-    
+    console.log('Deleting /application/:', id);
     try {
         const deletedApplication = await Application.findByIdAndDelete(id);
         if (!deletedApplication) {
@@ -304,8 +309,8 @@ app.delete('/applications/:id', async (req, res) => {
 });
 app.get('/stats', async (req, res) => {
     try {
-        const userId = req.query.userId; // Assuming req.user contains the authenticated user object
-
+        console.log('Fetching /stats for user:', req.query.userId);
+        const userId = req.query.userId;
         // Fetch stats for the logged-in user only
         const stats = await Stats.findOne({ user: userId});
         if (!stats) {
@@ -353,12 +358,105 @@ app.get('/applications/:id/notes', async (req, res) => {
     }
 });
 
+/* Notes API Calls End */
+// /* CSV Upload API Calls */
+app.post('/import-csv', upload.single('csvFile'), async (req, res) => {
+    const { roleColumn, companyColumn, dateAppliedColumn, statusColumn } = req.body;
+    const userId = req.query.userId; 
+    const statusMappings = {
+        applied: req.body['statusMappings.applied'] || 'Applied',
+        onlineAssessment: req.body['statusMappings.onlineAssessment'] || 'Online Assessment',
+        interviewScheduled: req.body['statusMappings.interviewScheduled'] || 'Interview Scheduled',
+        interviewed: req.body['statusMappings.interviewed'] || 'Interviewed',
+        offerReceived: req.body['statusMappings.offerReceived'] || 'Offer Received',
+        offerAccepted: req.body['statusMappings.offerAccepted'] || 'Offer Accepted',
+        rejected: req.body['statusMappings.rejected'] || 'Rejected'
+    };
+    const currentStatusDict = new Map([
+        ['applied', 'Applied'],
+        ['onlineAssessment', 'Online Assessment'],
+        ['interviewScheduled', 'Interview Scheduled'],
+        ['interviewed', 'Interviewed'],
+        ['offerReceived', 'Offer Received'],
+        ['offerAccepted', 'Offer Accepted'],
+        ['rejected', 'Rejected']
+    ]);
+    const results = [];
+    let missingColumns = [];
+    const stream = fs.createReadStream(req.file.path)
+        .pipe(csvParser())
+        .on('headers', (headers) => {
+            const requiredColumns = [roleColumn, companyColumn, dateAppliedColumn, statusColumn];
+            missingColumns = requiredColumns.filter(column => !headers.includes(column));
+
+            if (missingColumns.length > 0) {
+                console.log('Missing columns:', missingColumns);
+                stream.destroy();
+                return res.status(400).json({
+                    error: `Missing columns: ${missingColumns.join(', ')}`
+                });
+            }
+        })        .on('data', (data) => results.push(data))
+        .on('end', async () => {
+            try {
+                for (const row of results) {
+                    const role = row[roleColumn];
+                    const company = row[companyColumn];
+                    const dateApplied = row[dateAppliedColumn];
+                    if (!role || !company || !dateApplied) {
+                        console.log('Skipping row:', row);
+                        continue;
+                    }
+                    const status = row[statusColumn];
+                    
+                    // Map status to predefined statuses
+                    const currentStatus = currentStatusDict.get(Object.keys(statusMappings).find(
+                        key => statusMappings[key] === status
+                    )) || 'Applied'; // Default to 'Applied' if status is not found
+
+                    
+                    
+                    // Gather other columns as notes
+                    const notes = {};
+                    for (const key in row) {
+                        if (![roleColumn, companyColumn, dateAppliedColumn, statusColumn].includes(key)) {
+                            notes[key] = row[key];
+                        }
+                    }
+                    console.log('Application Detected:', { role, company, dateApplied, currentStatus, userId, notes });
+                    const application = new Application({
+                        role,
+                        company,
+                        dateApplied,
+                        currentStatus,
+                        user: userId,
+                        notes: JSON.stringify(notes) // Store notes as a JSON string
+                    });
+                    
+                    await application.save();
+                    await updateStats(userId, currentStatus); // Update stats for each application
+                }
+
+                // Clean up the uploaded file
+                fs.unlinkSync(req.file.path);
+                
+                res.status(200).json({ message: 'CSV data imported successfully' });
+            } catch (error) {
+                console.error('Error importing CSV data:', error);
+                res.status(500).json({ error: 'Internal server error' });
+            }
+        });
+});
+// /* CSV Upload API Calls End */
 
 
+app.listen(3000, () => {
+    console.log('Server running at http://localhost:3000/');
+});
 
-app.listen(port, ip, () => {
-    console.log(`Server running at http://${ip}:${port}/`);
-  });
+// app.listen(port, ip, () => {
+//     console.log(`Server running at http://${ip}:${port}/`);
+//   });
 
 process.on('uncaughtException', err => {
     console.error(`There was an uncaught error: ${err}`);

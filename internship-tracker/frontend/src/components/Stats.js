@@ -1,29 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Row, Col } from 'react-bootstrap';
 
-const Stats = () => {
+const Stats = ({ stat }) => {
     const [stats, setStats] = useState({
         onlineassessments: 0,
         interviews: 0,
         applications: 0,
         offersreceived: 0,
+        rejected: 0,
     });
-    const fetchStats = async () => {
-      try {
-          const response = await axios.get('https://lakshyag42.alwaysdata.net/stats', {
-            params: { userId: localStorage.getItem('userId') }
-        });
-          setStats(response.data);
-      } catch (error) {
-          console.error('Error fetching stats:', error);
-      }
-    };
     useEffect(() => {
-        fetchStats();
-        const interval = setInterval(fetchStats, 100); // Fetch stats every 5 seconds
-        return () => clearInterval(interval);
-    }, []);
+      setStats(stat);
+  }, [stat]);
 
     return (
       <div>

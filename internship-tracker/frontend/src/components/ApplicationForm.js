@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Form, Button, Container, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
-
+import ImportCSV from './ImportCSV';
 
 const ApplicationForm = ({ setApplications }) => {
     const [role, setRole] = useState('');
@@ -11,12 +11,13 @@ const ApplicationForm = ({ setApplications }) => {
     const [existingRoles, setExistingRoles] = useState([]);
     const [existingCompanies, setExistingCompanies] = useState([]);
     const [userId] = useState(localStorage.getItem('userId'));
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         // Fetch existing roles and companies when the component mounts
         const fetchExistingData = async () => {
             try {
-                const response = await axios.get('https://lakshyag42.alwaysdata.net/existing-data'); // Replace with your API endpoint
+                const response = await axios.get('http://localhost:3000/existing-data'); // Replace with your API endpoint
                 setExistingRoles(response.data.roles);
                 setExistingCompanies(response.data.companies);
             } catch (error) {
@@ -33,35 +34,24 @@ const ApplicationForm = ({ setApplications }) => {
         </Tooltip>
     );
 
+    const handleShowModal = () => setShowModal(true);
+    const handleCloseModal = () => setShowModal(false);
+
     const handleSubmit = async (e) => {
-        ReactGA.event({
-            category: 'User',
-            action: 'Added a new application'
-        });
         const userId = localStorage.getItem('userId');
         e.preventDefault();
-        await axios.post('https://lakshyag42.alwaysdata.net/applications', 
+        await axios.post('http://localhost:3000/applications', 
             { role, company, dateApplied, currentStatus, user: userId },
             { params: { userId: localStorage.getItem('userId') } }
         );
-
-        try {
-            const response = await axios.get('https://lakshyag42.alwaysdata.net/applications', {
-                params: { userId: localStorage.getItem('userId') }
-            });
-            setApplications(response.data);
-        } catch (error) {
-            console.error('Error fetching applications after adding new application:', error);
-        }
-
         try {
             
-            const response = await axios.get('https://lakshyag42.alwaysdata.net/applications', {
+            const response = await axios.get('http://localhost:3000/applications', {
                 params: { userId: localStorage.getItem('userId') }
             });
             setApplications(response.data);
 
-            const existingDataResponse = await axios.get('https://lakshyag42.alwaysdata.net/existing-data');
+            const existingDataResponse = await axios.get('http://localhost:3000/existing-data');
             setExistingRoles(existingDataResponse.data.roles);
             setExistingCompanies(existingDataResponse.data.companies);
         } catch (error) {
@@ -159,8 +149,20 @@ const ApplicationForm = ({ setApplications }) => {
                             )}
                     </Col>
                 </Row>
-                
             </Form>
+            <Col style={{marginTop: '-40px'}}> 
+                    {userId === '0' ? (
+                        <Button variant="primary" onClick={handleShowModal} disabled>
+                            Import CSV
+                        </Button>
+                    ) : (
+                        <Button variant="primary" onClick={handleShowModal}>
+                            Import CSV
+                        </Button>
+                        
+                    )}
+                    <ImportCSV show={showModal} handleClose={handleCloseModal} setApplications={setApplications} />
+            </Col>        
         </Container>
     );
 };
