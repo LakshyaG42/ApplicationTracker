@@ -9,9 +9,8 @@ import Stats from './components/Stats';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Alert, Button, Row, Col } from 'react-bootstrap';
 import "./styles.css";
-import GoogleLoginButton from './components/GoogleLoginButton';
 import styled from 'styled-components';
-
+import Login from './components/Login';
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -42,7 +41,7 @@ const App = () => {
     };
 
     const handleLogout = async () => {
-        await axios.get('http://localhost:3000/logout');
+        await axios.get('https://lakshyag42.alwaysdata.net/logout');
         localStorage.setItem('userId', "0");
         setIsLoggedIn(false); // Log user out
       };
@@ -50,7 +49,7 @@ const App = () => {
     const handleGoogleLoginSuccess = async (credentialResponse) => {
       console.log('Google login success:', credentialResponse);
       try {
-          const response = await axios.post('http://localhost:3000/auth/google', {
+          const response = await axios.post('https://lakshyag42.alwaysdata.net/auth/google', {
               tokenId: credentialResponse.credential,
           });
           console.log('Server response:', response.data);
@@ -72,7 +71,7 @@ const App = () => {
 
     const fetchApplications = async () => {
       try {
-          const response = await axios.get('http://localhost:3000/applications', {
+          const response = await axios.get('https://lakshyag42.alwaysdata.net/applications', {
             params: { userId: localStorage.getItem('userId') }
         });
           setApplications(response.data);
@@ -82,7 +81,7 @@ const App = () => {
     };
     const fetchStats = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/stats', {
+            const response = await axios.get('https://lakshyag42.alwaysdata.net/stats', {
               params: { userId: localStorage.getItem('userId') }
           });
             setStats(response.data);
@@ -104,7 +103,7 @@ const App = () => {
     }, [applications]);
     
     return (
-        <Container>
+      <Container>
           {/* Conditional rendering based on isLoggedIn state */}
           {isLoggedIn ? (
             <>
@@ -127,18 +126,17 @@ const App = () => {
               <AppContainer>
                 <ApplicationList applications={applications} setApplications={setApplications} fetchStats={fetchStats} /> {}
               </AppContainer>
-
             </>
           ) : (
             <>
-              <AppContainer>
+              {/* <AppContainer>
                 <Alert variant="danger">You are not logged in. Please log in to access the application.</Alert>
                 <ButtonContainer>
                   <GoogleLoginButton onSuccess={handleGoogleLoginSuccess} onFailure={handleGoogleLoginFailure} />
                   <Button variant="primary" onClick={handleSample}>Sample Data</Button>
                 </ButtonContainer>                  
-              </AppContainer>
-              
+              </AppContainer> */}
+              <Login onGoogleSuccess={handleGoogleLoginSuccess} onGoogleFailure={handleGoogleLoginFailure}/>
               
               
             </>
