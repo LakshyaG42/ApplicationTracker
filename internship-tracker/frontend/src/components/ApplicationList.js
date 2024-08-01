@@ -26,7 +26,7 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
         console.log('Opening notes for application:', appId);
         setCurrentAppId(appId);
         try {
-            const response = await axios.get(`http://localhost:3000/applications/${appId}/notes`);
+            const response = await axios.get(`https://lakshyag42.alwaysdata.net/applications/${appId}/notes`);
             console.log('Notes:', response.data);
             setCurrentNotes(response.data);
         } catch (error) {
@@ -37,7 +37,7 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
 
     const handleNotesSave = async (notes) => {
         try {
-            await axios.put(`http://localhost:3000/applications/${currentAppId}/notes`, { notes });
+            await axios.put(`https://lakshyag42.alwaysdata.net/applications/${currentAppId}/notes`, { notes });
             setApplications((prevApplications) =>
                 prevApplications.map((app) =>
                     app._id === currentAppId ? { ...app, notes } : app
@@ -55,7 +55,7 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
 
     const updateStats = async (userId, action) => {
         try {
-            const response = await axios.post('http://localhost:3000/stats', { userId, action });
+            const response = await axios.post('https://lakshyag42.alwaysdata.net/stats', { userId, action });
             console.log(response.data.message); // Log success message
         } catch (error) {
             console.error('Error updating stats:', error);
@@ -64,7 +64,7 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
     const handleStatusChange = async (id, newStatus) => {
         console.log('Changing status:', id, newStatus);
         try {
-            await axios.put(`http://localhost:3000/applications/${id}`, 
+            await axios.put(`https://lakshyag42.alwaysdata.net/applications/${id}`, 
                 { currentStatus: newStatus },
                 { params: { userId: localStorage.getItem('userId') } }
             );
@@ -84,7 +84,7 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:3000/applications/${id}`);
+            await axios.delete(`https://lakshyag42.alwaysdata.net/applications/${id}`);
             const updatedApplications = applications.filter(app => app._id !== id);
             setApplications(updatedApplications);
             fetchStats(); 

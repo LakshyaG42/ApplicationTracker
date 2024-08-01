@@ -44,13 +44,13 @@ const ImportCSV = ({ show, handleClose, setApplications }) => {
         });
 
         try {
-            await axios.post('http://localhost:3000/import-csv', formData, {
+            await axios.post('https://lakshyag42.alwaysdata.net/import-csv', formData, {
                 params: { userId: localStorage.getItem('userId') },
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            const response = await axios.get('http://localhost:3000/applications', {
+            const response = await axios.get('https://lakshyag42.alwaysdata.net/applications', {
                 params: { userId: localStorage.getItem('userId') }
             });
             console.log('Imported applications:', response.data);
