@@ -14,8 +14,7 @@ body {
 .Loginheader {
     font-size: 37px;
     font-weight: 600;
-    margin: 20px 0;
-    background-color: #fff;
+    margin: 10px 0;
     text-align: center;
 }
 .LoginContainer {
@@ -54,7 +53,7 @@ body {
 }
 
 .LoginContainer button {
-  background-color: #512da8;
+  background-color: #0c6c6c;
   color: #fff;
   font-size: 12px;
   padding: 10px 45px;
@@ -173,9 +172,9 @@ body {
 }
 
 .toggle {
-  background-color: #512da8;
+  background-color: #0c6c6c;
   height: 100%;
-  background: linear-gradient(to right, #5c6bc0, #512da8);
+  background: linear-gradient(to right, #54ac8c, #0c6c6c);
   color: #fff;
   position: relative;
   left: -100%;

@@ -23,7 +23,7 @@ const Login = ({ onSuccess, onFailure, onGoogleSuccess, onGoogleFailure }) => {
     <div className={`LoginContainer ${isActive ? 'active' : ''}`} id="LoginContainer">
       <div className="form-LoginContainer sign-up">
         <form onSubmit={handleSignup}>
-          <h1>Create Account</h1>
+          <h1 className='Loginheader'>Create Account</h1>
           <div className="social-icons">
             <div className="icon"><GoogleLoginButton
                 onSuccess={onGoogleSuccess}
@@ -40,7 +40,7 @@ const Login = ({ onSuccess, onFailure, onGoogleSuccess, onGoogleFailure }) => {
       </div>
       <div className="form-LoginContainer sign-in">
         <form>
-          <h1 className='header' >Welcome Back! Sign In</h1>
+          <h1 className='Loginheader' >Welcome Back! Sign In</h1>
           <div className="social-icons">
             <div className="icon"><GoogleLoginButton
                 onSuccess={onGoogleSuccess}
