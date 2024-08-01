@@ -7,7 +7,7 @@ import ApplicationList from './components/ApplicationList';
 import AppContainer from './components/AppContainer'; 
 import Stats from './components/Stats';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Alert, Button, Row, Col } from 'react-bootstrap';
+import { Container, Button, Row, Col } from 'react-bootstrap';
 import "./styles.css";
 import styled from 'styled-components';
 import Login from './components/Login';
@@ -21,6 +21,11 @@ const CustomRow = styled(Row)`
   justify-content: space-between;
   align-items: center;
   `;
+
+const ApplicationListContainer = styled(AppContainer)`
+  min-height: 45vh;
+`;
+
 const App = () => {
     const [applications, setApplications] = useState([]);
 
@@ -107,7 +112,7 @@ const App = () => {
           {/* Conditional rendering based on isLoggedIn state */}
           {isLoggedIn ? (
             <>
-              <AppContainer>
+              <AppContainer className="statsContainer"> 
                 <Stats stat = {stats}/> {}
               </AppContainer>
 
@@ -123,9 +128,9 @@ const App = () => {
                 <ApplicationForm setApplications={setApplications} /> {}
               </AppContainer>
 
-              <AppContainer>
+              <ApplicationListContainer >
                 <ApplicationList applications={applications} setApplications={setApplications} fetchStats={fetchStats} /> {}
-              </AppContainer>
+              </ApplicationListContainer>
             </>
           ) : (
             <>
@@ -136,7 +141,7 @@ const App = () => {
                   <Button variant="primary" onClick={handleSample}>Sample Data</Button>
                 </ButtonContainer>                  
               </AppContainer> */}
-              <Login onGoogleSuccess={handleGoogleLoginSuccess} onGoogleFailure={handleGoogleLoginFailure}/>
+              <Login handleSample={handleSample} onGoogleSuccess={handleGoogleLoginSuccess} onGoogleFailure={handleGoogleLoginFailure}/>
               
               
             </>

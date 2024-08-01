@@ -19,6 +19,8 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
     const [showNotesPopup, setShowNotesPopup] = useState(false);
     const [currentNotes, setCurrentNotes] = useState('');
     const [currentAppId, setCurrentAppId] = useState(null);
+    const [searchCompany, setSearchCompany] = useState('');
+    const [searchRole, setSearchRole] = useState('');
 
     /** Notes Functions */
 
@@ -102,7 +104,9 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
     };
 
     const filteredApplications = applications.filter(app => 
-        filterStatus === 'All' || app.currentStatus === filterStatus
+        (filterStatus === 'All' || app.currentStatus === filterStatus) &&
+        app.company.toLowerCase().includes(searchCompany.toLowerCase()) &&
+        app.role.toLowerCase().includes(searchRole.toLowerCase())
     );
 
     const sortedApplications = [...filteredApplications].sort((a, b) => {
@@ -132,10 +136,26 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
     };
 
     return (
-        <Container>
+        <Container className='applicationsContainer'>
             <Row>
-                <Col>
-                <h2>Current Applications</h2>
+                <Col xs="2">
+                <h2>Applications</h2>
+                </Col>
+                <Col xs="3">
+                    <Form.Control
+                        type="text"
+                        placeholder="Search by Company"
+                        value={searchCompany}
+                        onChange={(e) => setSearchCompany(e.target.value)}
+                    />
+                </Col>
+                <Col xs="3">
+                    <Form.Control
+                        type="text"
+                        placeholder="Search by Role"
+                        value={searchRole}
+                        onChange={(e) => setSearchRole(e.target.value)}
+                    />
                 </Col>
                 <Col xs="2">
                     <Form.Select onChange={handleSortChange} value={sortDirection}>
@@ -143,7 +163,7 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                         <option value="desc">Descending</option>
                     </Form.Select>           
                 </Col>
-                <Col xs="3">
+                <Col xs="2">
                     <Form.Select onChange={handleFilterChange} value={filterStatus}>
                         <option value="All">All</option>
                         <option value="Applied">Applied</option>

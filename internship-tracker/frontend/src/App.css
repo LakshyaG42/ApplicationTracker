@@ -41,3 +41,9 @@
 .ml-auto {
   margin-left: auto;
 }
+.applicationsContainer {
+  min-height: 48vh;
+}
+.statsContainer {
+  margin-top: 10px;
+}
