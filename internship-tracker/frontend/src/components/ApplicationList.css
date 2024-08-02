@@ -18,7 +18,7 @@
     transition: opacity 500ms, transform 500ms;
 }
 .scrollable-list-container {
-    max-height: 400px; /* Adjust the height as needed */
+    max-height: 40vh; /* Adjust the height as needed */
     overflow-y: auto;
     overflow-x: hidden;
 }

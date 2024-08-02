@@ -3,8 +3,9 @@ import './Login.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGooglePlusG, faFacebookF, faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 import GoogleLoginButton from './GoogleLoginButton';
+import { Button } from 'react-bootstrap';
 
-const Login = ({ onSuccess, onFailure, onGoogleSuccess, onGoogleFailure }) => {
+const Login = ({ handleSample, onSuccess, onFailure, onGoogleSuccess, onGoogleFailure }) => {
   const [isActive, setIsActive] = useState(false);
 
   const handleToggle = () => {
@@ -36,6 +37,7 @@ const Login = ({ onSuccess, onFailure, onGoogleSuccess, onGoogleFailure }) => {
           <input type="email" placeholder="Email" />
           <input type="password" placeholder="Password" />
           <button type="submit">Sign Up</button>
+          <button class="sampleDataButton" onClick={() => handleSample()}>Sample Data</button>
         </form>
       </div>
       <div className="form-LoginContainer sign-in">
@@ -56,6 +58,7 @@ const Login = ({ onSuccess, onFailure, onGoogleSuccess, onGoogleFailure }) => {
           <input type="password" placeholder="Password" />
           {/* <a href="#">Forgot Your Password?</a> */}
           <button type="submit">Sign in</button>
+          <button class="sampleDataButton" onClick={() => handleSample()}>Sample Data</button>
         </form>
       </div>
       <div className="toggle-LoginContainer">
