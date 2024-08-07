@@ -374,9 +374,6 @@ app.get('/applications/:id/dates', async (req, res) => {
     try {
         const { id } = req.params;
         const application = await Application.findById(id);
-        if (!application) {
-            return res.status(404).json({ error: 'Application not found' });
-        }
         res.status(200).json({
             oaDueDate: application.oaDueDate,
             oaCompleted: application.oaCompleted,
