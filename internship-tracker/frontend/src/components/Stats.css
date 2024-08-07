@@ -1,0 +1,25 @@
+.stat-row {
+    display: flex; 
+    flex-wrap: wrap-reverse;
+    justify-content: space-evenly;
+    margin-bottom: 1rem;
+    border: 1px solid #e29b6b ;
+    border-radius: 20px;
+    box-shadow: #005555;
+}
+
+.stat-value {
+    background: -webkit-linear-gradient(left, #04b98c, #005555);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+
+}
+.stat-name {
+    background: -webkit-linear-gradient(right, #54ac8c, #0c6c6c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

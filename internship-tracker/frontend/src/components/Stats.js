@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
+import './Stats.css';
 
 const Stats = ({ stat }) => {
     const [stats, setStats] = useState({
@@ -38,12 +39,12 @@ const Stats = ({ stat }) => {
           </Col>
           <Col>
             <div className="stat-column">
-              <h3 className="stat-name">Rejected</h3>
+              <h3 className="stat-name">Total Rejections</h3>
             </div>
           </Col>
           <Col>
             <div className="stat-column">
-              <h3 className="stat-name">Active OAs</h3>
+              <h3 className="stat-name">Active Assessments</h3>
             </div>
           </Col>
           <Col>

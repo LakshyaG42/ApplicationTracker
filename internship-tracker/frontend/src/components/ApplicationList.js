@@ -269,7 +269,7 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                                                 <small className="oaDates" style={{ fontStyle: 'italic' }}>
                                                     &emsp;{app.oaDueDate ? (
                                                         app.oaCompleted ? 'Assessment Completed' : `Assessment Due Date: ${new Date(app.oaDueDate).toUTCString().substring(4, 16)}`
-                                                    ) : 'Assessment Due Date: null'}
+                                                    ) : 'Assessment Due Date: not set'}
                                                 </small>
                                                 )}
                                                 {app.currentStatus === 'Interview Scheduled' && (
