@@ -22,3 +22,21 @@
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+.appliedOn {
+    color: #666;
+    margin-top: 0;
+    padding: 0;
+    height: 10px;
+}
+
+.role {
+    flex: 1;
+    overflow-x: scroll;
+    white-space: nowrap;
+}
+
+.role::-webkit-scrollbar {
+    width: 0;
+    display: none;
+}
