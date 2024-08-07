@@ -162,7 +162,8 @@ const ApplicationForm = ({ setApplications }) => {
                         
                     )}
                     <ImportCSV show={showModal} handleClose={handleCloseModal} setApplications={setApplications} />
-            </Col>        
+            </Col>
+               
         </Container>
     );
 };

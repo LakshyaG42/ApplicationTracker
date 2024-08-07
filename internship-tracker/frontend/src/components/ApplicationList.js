@@ -192,8 +192,11 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                                         style={{ backgroundColor: getBackgroundColor(app.currentStatus) }}
                                     >
                                         <Row>
-                                            <Col>
-                                                {app.role} at {app.company} - Applied on {new Date(app.dateApplied).toUTCString().substring(4,16)}
+                                            <Col lg="5" className='role' style={{maxHeight: '30px'}}>
+                                                <strong>{app.role}</strong>
+                                            </Col >
+                                            <Col style={{overflow: 'hidden', maxHeight: '30px'}}>
+                                            @ <strong>{app.company}</strong>
                                             </Col>
                                             <Col2 xs="3">
                                                 <Form.Select
@@ -215,6 +218,13 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                                             <Col2 xs="auto">
                                                 <Button variant="danger" onClick={() => handleDelete(app._id)}>Delete</Button>
                                             </Col2>
+                                        </Row>
+                                        <Row style={{marginTop: '-15px'}}>
+                                            <Col>
+                                                <small className="text-muted" style={{ fontStyle: 'italic' }}>
+                                                    Applied on {new Date(app.dateApplied).toUTCString().substring(4, 16)}
+                                                </small>
+                                            </Col>
                                         </Row>
                                     </ListGroup.Item>
                                 </CSSTransition>

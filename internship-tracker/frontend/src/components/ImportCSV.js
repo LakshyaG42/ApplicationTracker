@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
+import Papa from 'papaparse';
 
 const ImportCSV = ({ show, handleClose, setApplications }) => {
     const [csvFile, setCsvFile] = useState(null);
@@ -19,7 +20,81 @@ const ImportCSV = ({ show, handleClose, setApplications }) => {
     });
     
     const handleFileChange = (e) => {
-        setCsvFile(e.target.files[0]);
+        const file = e.target.files[0];
+        setCsvFile(file);
+        if (file) {
+            Papa.parse(file, {
+                header: true,
+                complete: (results) => {
+                    const headers = results.meta.fields;
+                    detectColumns(headers, results.data);
+                }
+            });
+        }
+    };
+
+
+    const detectColumns = (headers, data) => {
+        const detectRoleColumns = headers.filter(header => 
+            /role|position|occupation|job title|job|title|jobrole|jobtitle|job_position|positiontitle|job_position_title|job_title|occupation_title|role_title|work_title|job_role|position_role|job_role_title|jobtitlerole|job_title_role|job_position_role|role_position|jobtitle_position|job_role_position/i.test(header.toLowerCase())
+          );
+          
+          const detectCompanyColumns = headers.filter(header => 
+            /company|organization|employer|companyname|employername|organizationname|business|firm|corporation|companytitle|company_org|org|employertitle|employer_org|company_employer|employer_company|company_organization|orgname|company_firm|company_business|orgtitle|employer_firm|businessname|companycorp|org_employer/i.test(header.toLowerCase())
+          );
+          
+          const detectDateAppliedColumns = headers.filter(header => 
+            /date|date applied|application date|applied on|applieddate|dateofapplication|application_date|applied_date|date_applied|date_of_application|date_submitted|submissiondate|appdate|date_application|application_submission_date|dateofapply|date_app|applied_date_on|date_application_submitted|applied_on_date|date_of_submission|app_date|date_applied_on|applicationdateapplied|application_date_applied/i.test(header.toLowerCase())
+          );
+          
+          const detectStatusColumns = headers.filter(header => 
+            /status|application status|current status|appstatus|statusofapplication|application_status|current_status|status_app|application_status_current|applicationcurrentstatus|status_current|statusofapp|statusapplication|app_status|app_current_status|application_current_status|status_application|status_app_current|currentappstatus|current_app_status|app_status_current|currentapplicationstatus|app_currentstatus|statuscurrent|currentapplication_status/i.test(header.toLowerCase())
+          );
+
+        setRoleColumn(detectRoleColumns.length >= 1 ? detectRoleColumns[0] : '');
+        setCompanyColumn(detectCompanyColumns.length >= 1 ? detectCompanyColumns[0] : '');
+        setDateAppliedColumn(detectDateAppliedColumns.length >= 1 ? detectDateAppliedColumns[0] : '');
+        setStatusColumn(detectStatusColumns.length >= 1 ? detectStatusColumns[0] : '');
+        
+        // If multiple columns detected, you may need additional logic to handle this case
+        if (detectRoleColumns.length > 1) alert('Multiple role columns detected, please choose one.');
+        if (detectCompanyColumns.length > 1) alert('Multiple company columns detected, please choose one.');
+        if (detectDateAppliedColumns.length > 1) alert('Multiple date applied columns detected, please choose one.');
+        if (detectStatusColumns.length > 1) alert('Multiple status columns detected, please choose one.');
+        if (detectStatusColumns.length > 0) {
+            const statusColumnName = detectStatusColumns[0]; // Use the first detected status column
+            const statusVariations = {
+                applied: /applied|apply|applied for|application submitted/i,
+                onlineAssessment: /online\s*assessment|oa|assessment|online\s*test/i,
+                interviewScheduled: /interview\s*scheduled|interview\s*set|interview\s*planned/i,
+                interviewed: /interviewed|interview|interview\s*complete|interview\s*done/i,
+                offerReceived: /offer\s*received|offer|offer\s*letter/i,
+                offerAccepted: /offer\s*accepted|accepted|accepted\s*offer/i,
+                rejected: /rejected|rejection|rej|not\s*selected/i
+            };
+    
+            const statusColumnValues = data.map(row => row[statusColumnName]);
+            const updatedStatusMappings = {
+                applied: '',
+                onlineAssessment: '',
+                interviewScheduled: '',
+                interviewed: '',
+                offerReceived: '',
+                offerAccepted: '',
+                rejected: ''
+            };
+    
+            for (const [statusKey, variations] of Object.entries(statusVariations)) {
+                const matchedValue = statusColumnValues.find(value => variations.test(value));
+                if (matchedValue) {
+                    updatedStatusMappings[statusKey] = matchedValue;
+                }
+            }
+
+            setStatusMappings(updatedStatusMappings);
+            console.log('Detected status mappings:', updatedStatusMappings);
+            // Optionally, set statusMappings state or handle mappings as needed
+        }
     };
 
     const handleStatusMappingChange = (e) => {
@@ -65,6 +140,7 @@ const ImportCSV = ({ show, handleClose, setApplications }) => {
             }
         }
     };
+
 
     return (
         <Modal show={show} onHide={handleClose}>
