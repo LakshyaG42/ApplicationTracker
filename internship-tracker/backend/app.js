@@ -417,13 +417,13 @@ app.post('/import-csv', upload.single('csvFile'), async (req, res) => {
                     
                     
                     // Gather other columns as notes
-                    const notes = {};
+                    const notes = [];
                     for (const key in row) {
                         if (![roleColumn, companyColumn, dateAppliedColumn, statusColumn].includes(key)) {
                             notes.push(`${key}: ${row[key]}`);
                         }
                     }
-                    const formattedNotes = notes.join('\n');
+                    const formattedNotes = notes.join('<br />');
                     console.log('Application Detected:', { role, company, dateApplied, currentStatus, userId, notes });
                     const application = new Application({
                         role,
@@ -451,13 +451,13 @@ app.post('/import-csv', upload.single('csvFile'), async (req, res) => {
 // /* CSV Upload API Calls End */
 
 
-// app.listen(3000, () => {
-//     console.log('Server running at http://localhost:3000/');
-// });
+app.listen(3000, () => {
+    console.log('Server running at https://lakshyag42.alwaysdata.net/');
+});
 
-app.listen(port, ip, () => {
-    console.log(`Server running at http://${ip}:${port}/`);
-  });
+// app.listen(port, ip, () => {
+//     console.log(`Server running at http://${ip}:${port}/`);
+//   });
 
 process.on('uncaughtException', err => {
     console.error(`There was an uncaught error: ${err}`);
