@@ -32,6 +32,8 @@ app.use(session({
 
 password = encodeURIComponent(`${process.env.MONOGO_DB_PASSWORD}`)
 const connectionUri = `mongodb+srv://lakshyagour42:${password}@application-tracker.szxpwak.mongodb.net/internshipTracker` //`mongodb+srv://lakshyagour42:<${password}@application-tracker.szxpwak.mongodb.net/?retryWrites=true&w=majority&appName=Application-Tracker`;
+//const connectionUri = 'mongodb://localhost:27017/internshipTracker';
+
 //mongoose.connect('mongodb://localhost:27017/internshipTracker', { useNewUrlParser: true, useUnifiedTopology: true });
 try {
     mongoose.connect(connectionUri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -232,7 +234,7 @@ app.get('/applications', async (req, res) => {
 
 app.put('/applications/:id', async (req, res) => {
     const { id } = req.params;
-    const { currentStatus } = req.body;
+    const { currentStatus, oaDueDate, interviewDate, oaCompleted } = req.body;
     const userId = req.query.userId;
 
     console.log('Updating status for application:', id, 'to', currentStatus);
@@ -244,6 +246,16 @@ app.put('/applications/:id', async (req, res) => {
 
         const previousStatus = application.currentStatus;
         application.currentStatus = currentStatus;
+
+        if (currentStatus === 'Online Assessment' && oaDueDate !== undefined) {
+            application.oaDueDate = oaDueDate;
+            application.oaCompleted = oaCompleted;
+        }
+        if (currentStatus === 'Interview Scheduled' && interviewDate !== undefined) {
+            application.interviewDate = interviewDate;
+        }
+
+
         await application.save();
 
         // Fetch or create stats for the user
@@ -358,6 +370,31 @@ app.get('/applications/:id/notes', async (req, res) => {
     }
 });
 
+app.get('/applications/:id/dates', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const application = await Application.findById(id);
+        res.status(200).json({
+            oaDueDate: application.oaDueDate,
+            oaCompleted: application.oaCompleted,
+            interviewDate: application.interviewDate,
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch notes' });
+    }
+});
+
+app.put('/applications/:id/dates', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { oaDueDate, oaCompleted, interviewDate } = req.body;
+        const application = await Application.findByIdAndUpdate(id, { oaDueDate, interviewDate, oaCompleted }, { new: true });
+        res.status(200).json(application);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to update dates' });
+    }
+});
+
 /* Notes API Calls End */
 // /* CSV Upload API Calls */
 app.post('/import-csv', upload.single('csvFile'), async (req, res) => {
@@ -452,7 +489,7 @@ app.post('/import-csv', upload.single('csvFile'), async (req, res) => {
 
 
 // app.listen(3000, () => {
-//     console.log('Server running at http://localhost:3000/');
+//     console.log('Server running at https://lakshyag42.alwaysdata.net/');
 // });
 
 app.listen(port, ip, () => {
