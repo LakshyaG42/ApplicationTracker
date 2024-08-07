@@ -420,7 +420,7 @@ app.post('/import-csv', upload.single('csvFile'), async (req, res) => {
                     const notes = {};
                     for (const key in row) {
                         if (![roleColumn, companyColumn, dateAppliedColumn, statusColumn].includes(key)) {
-                            notes[key] = row[key];
+                            notes.push(`${key}: ${row[key]}`);
                         }
                     }
                     console.log('Application Detected:', { role, company, dateApplied, currentStatus, userId, notes });
