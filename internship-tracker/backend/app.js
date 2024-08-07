@@ -423,6 +423,7 @@ app.post('/import-csv', upload.single('csvFile'), async (req, res) => {
                             notes.push(`${key}: ${row[key]}`);
                         }
                     }
+                    const formattedNotes = notes.join('\n');
                     console.log('Application Detected:', { role, company, dateApplied, currentStatus, userId, notes });
                     const application = new Application({
                         role,
@@ -430,7 +431,7 @@ app.post('/import-csv', upload.single('csvFile'), async (req, res) => {
                         dateApplied,
                         currentStatus,
                         user: userId,
-                        notes: JSON.stringify(notes) // Store notes as a JSON string
+                        notes: formattedNotes  // Store notes as a JSON string
                     });
                     
                     await application.save();
