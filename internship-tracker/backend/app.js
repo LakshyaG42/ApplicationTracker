@@ -451,13 +451,13 @@ app.post('/import-csv', upload.single('csvFile'), async (req, res) => {
 // /* CSV Upload API Calls End */
 
 
-app.listen(3000, () => {
-    console.log('Server running at https://lakshyag42.alwaysdata.net/');
-});
+// app.listen(3000, () => {
+//     console.log('Server running at http://localhost:3000/');
+// });
 
-// app.listen(port, ip, () => {
-//     console.log(`Server running at http://${ip}:${port}/`);
-//   });
+app.listen(port, ip, () => {
+    console.log(`Server running at http://${ip}:${port}/`);
+  });
 
 process.on('uncaughtException', err => {
     console.error(`There was an uncaught error: ${err}`);
