@@ -23,8 +23,14 @@
     overflow-x: hidden;
 }
 
-.appliedOn {
-    color: #666;
+.oaDates {
+    color: #0058a0;
+    margin-top: 0;
+    padding: 0;
+    height: 10px;
+}
+.interviewDates {
+    color: #474747ea;
     margin-top: 0;
     padding: 0;
     height: 10px;
