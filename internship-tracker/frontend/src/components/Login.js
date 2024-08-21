@@ -20,6 +20,10 @@ const Login = ({ handleSample, onSuccess, onFailure, onGoogleSuccess, onGoogleFa
   };
 
 
+  const handleLearnMore = (url) => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+      if (newWindow) newWindow.opener = null
+  }
   return (
     <div className={`LoginContainer ${isActive ? 'active' : ''}`} id="LoginContainer">
       <div className="form-LoginContainer sign-up">
@@ -67,11 +71,13 @@ const Login = ({ handleSample, onSuccess, onFailure, onGoogleSuccess, onGoogleFa
             <h1>Welcome Back!</h1>
             <p>Thanks for coming back! <br/>Sign in with your details to use the site.</p>
             <button className="hidden" id="login" onClick={handleToggle}>Sign In</button>
+            <button className="hidden" id="register" onClick={() => handleLearnMore("https://www.lakshyagour.com/application-tracker")}>Learn More</button>
           </div>
           <div className="toggle-panel toggle-right">
             <h1>New Here?</h1>
-            <p>Welcome to the Application Tracker, an application to help you keep track of job applications</p>
+            <p>Welcome to the Application Tracker v0.8, an application to help you keep track of job applications</p>
             <button className="hidden" id="register" onClick={handleToggle}>Sign Up</button>
+            <button className="hidden" id="register" onClick={() => handleLearnMore("https://www.lakshyagour.com/application-tracker")}>Learn More</button>
           </div>
         </div>
       </div>

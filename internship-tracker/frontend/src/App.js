@@ -94,6 +94,10 @@ const App = () => {
             console.error('Error fetching stats:', error);
         }
     };
+    const openInNewTab = (url) => {
+      const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+      if (newWindow) newWindow.opener = null
+    }
 
     useEffect(() => {
       if (isLoggedIn) {
@@ -121,6 +125,8 @@ const App = () => {
                   <Col>
                   <h1>Internship Tracker</h1> 
                   </Col>
+                  <Col style={{marginLeft: '-90px'}}>
+                  <Button onClick={()=> openInNewTab("https://www.lakshyagour.com/application-tracker")}> ?</Button></Col>
                   <Col className="d-flex justify-content-end">
                   <Button variant="secondary" onClick={handleLogout}>Logout</Button> 
                   </Col>
