@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
+import styled from 'styled-components';
+import './Stats.css';
 
 const Stats = ({ stat }) => {
     const [stats, setStats] = useState({
@@ -12,43 +14,46 @@ const Stats = ({ stat }) => {
     useEffect(() => {
       setStats(stat);
   }, [stat]);
+  const H3 = styled.h3`
+    font-size: 2vmin;
+  `;
 
     return (
       <div>
         <Row className="stat-row">
           <Col>
             <div className="stat-column">
-              <h3 className="stat-name">Online Assessments</h3>
+              <H3 className="stat-name">Online Assessments</H3>
             </div>
           </Col>
           <Col>
             <div className="stat-column">
-              <h3 className="stat-name">Total Interviews</h3>
+              <H3 className="stat-name">Total Interviews</H3>
             </div>
           </Col>
           <Col>
             <div className="stat-column">
-              <h3 className="stat-name">Total Applications</h3>
+              <H3 className="stat-name">Total Applications</H3>
             </div>
           </Col>
           <Col>
             <div className="stat-column">
-              <h3 className="stat-name">Offers Received</h3>
+              <H3 className="stat-name">Offers Received</H3>
             </div>
           </Col>
           <Col>
             <div className="stat-column">
-              <h3 className="stat-name">Rejected</h3>
+              <H3 className="stat-name">Rejected</H3>
             </div>
           </Col>
           <Col>
             <div className="stat-column">
-              <h3 className="stat-name">Active OAs</h3>
+              <H3 className="stat-name">Active OAs</H3>
             </div>
           </Col>
           <Col>
             <div className="stat-column">
-              <h3 className="stat-name">Current Interviews</h3>
+              <H3 className="stat-name">Current Interviews</H3>
             </div>
           </Col>
         </Row>
