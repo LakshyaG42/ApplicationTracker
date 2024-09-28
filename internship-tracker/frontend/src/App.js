@@ -11,6 +11,8 @@ import { Container, Button, Row, Col } from 'react-bootstrap';
 import "./styles.css";
 import styled from 'styled-components';
 import Login from './components/Login';
+import MediaQuery from 'react-responsive';
+
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -113,6 +115,7 @@ const App = () => {
     
     return (
       <Container>
+        <MediaQuery minWidth={1024}>
           {/* Conditional rendering based on isLoggedIn state */}
           {isLoggedIn ? (
             <>
@@ -122,15 +125,15 @@ const App = () => {
 
               <AppContainer>
                 <CustomRow>
-                  <Col>
-                  <h1>Internship Tracker</h1> 
+                  <Col className="d-flex align-items-end"> 
+                  <h1>Application Tracker</h1> 
+                  <Button style = {{margin: "10px"}}onClick={()=> openInNewTab("https://www.lakshyagour.com/application-tracker")}>Learn More</Button>
                   </Col>
-                  <Col style={{marginLeft: '-90px'}}>
-                  <Button onClick={()=> openInNewTab("https://www.lakshyagour.com/application-tracker")}> ?</Button></Col>
-                  <Col className="d-flex justify-content-end">
+                  <Col xs lg="2" className="d-flex justify-content-end">
                   <Button variant="secondary" onClick={handleLogout}>Logout</Button> 
                   </Col>
                 </CustomRow>
+                
                 <ApplicationForm setApplications={setApplications} /> {}
               </AppContainer>
 
@@ -148,12 +151,108 @@ const App = () => {
                 </ButtonContainer>                  
               </AppContainer> */}
               <Login handleSample={handleSample} onGoogleSuccess={handleGoogleLoginSuccess} onGoogleFailure={handleGoogleLoginFailure}/>
-              
-              
             </>
         )}
-           
-        </Container>
+        </MediaQuery>
+        <MediaQuery minWidth={601} maxWidth={769}>
+           {/* Tablet Vertical View */}
+          {isLoggedIn ? (
+            <>
+             <Container style={{ overflowX: 'hidden', minWidth: "90vw"}}>
+              <AppContainer className="statsContainer"> 
+                <Stats stat = {stats}/>
+              </AppContainer>
+
+              <AppContainer>
+                <Row>
+                  <Col>
+                    <h1>Application Tracker</h1>
+                    <Button onClick={()=> openInNewTab("https://www.lakshyagour.com/application-tracker")}>Learn More</Button>
+                  </Col>
+                  <Col xs lg="2">
+                    <Button variant="secondary" onClick={handleLogout}>Logout</Button>
+                  </Col>
+                </Row>
+                <ApplicationForm setApplications={setApplications} />
+              </AppContainer>
+
+              <ApplicationListContainer>
+                <ApplicationList applications={applications} setApplications={setApplications} fetchStats={fetchStats} />
+              </ApplicationListContainer>
+              </Container>
+            </>
+          ) : (
+            <Login handleSample={handleSample} onGoogleSuccess={handleGoogleLoginSuccess} onGoogleFailure={handleGoogleLoginFailure}/>
+          )}
+          
+        </MediaQuery>
+        <MediaQuery minWidth={770} maxWidth={1023}>
+           {/* Tablet Vertical View */}
+          {isLoggedIn ? (
+            <>
+             <Container style={{ overflowX: 'hidden', maxHeight: '100vh' }}>
+              <AppContainer className="statsContainer"> 
+                <Stats stat = {stats}/>
+              </AppContainer>
+
+              <AppContainer>
+                <Row>
+                  <Col>
+                    <h1>Application Tracker</h1>
+                    <Button onClick={()=> openInNewTab("https://www.lakshyagour.com/application-tracker")}>Learn More</Button>
+                  </Col>
+                  <Col xs lg="2">
+                    <Button variant="secondary" onClick={handleLogout}>Logout</Button>
+                  </Col>
+                </Row>
+                <ApplicationForm setApplications={setApplications} />
+              </AppContainer>
+
+              <ApplicationListContainer>
+                <ApplicationList applications={applications} setApplications={setApplications} fetchStats={fetchStats} />
+              </ApplicationListContainer>
+              </Container>
+            </>
+          ) : (
+            <Login handleSample={handleSample} onGoogleSuccess={handleGoogleLoginSuccess} onGoogleFailure={handleGoogleLoginFailure}/>
+          )}
+          
+        </MediaQuery>
+        <MediaQuery maxWidth={600}>
+           {/* Mobile View */}
+          {isLoggedIn ? (
+            <>
+            <Container style={{ overflowY: 'scroll', maxHeight: '100vh' }}>
+              <AppContainer> 
+                <Stats stat = {stats}/>
+              </AppContainer>
+
+              <AppContainer>
+                <Row>
+                  <Col md="auto">
+                    <h1>Application Tracker</h1>
+
+                 </Col>
+                 <Col>
+                  <Button onClick={()=> openInNewTab("https://www.lakshyagour.com/application-tracker")}>Learn More</Button>
+                 </Col>
+                  <Col xs lg="2">
+                    <Button variant="secondary" onClick={handleLogout}>Logout</Button>
+                  </Col>
+                </Row>
+                <ApplicationForm setApplications={setApplications} />
+              </AppContainer>
+
+              <AppContainer style={{height:"20rem"}}>
+                <ApplicationList applications={applications} setApplications={setApplications} fetchStats={fetchStats} />
+              </AppContainer>
+            </Container>
+            </>
+          ) : (
+            <Login handleSample={handleSample} onGoogleSuccess={handleGoogleLoginSuccess} onGoogleFailure={handleGoogleLoginFailure}/>
+          )}
+        </MediaQuery>
+      </Container>
     );
 };
 

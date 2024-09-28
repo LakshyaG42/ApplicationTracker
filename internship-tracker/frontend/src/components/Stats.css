@@ -1,3 +1,28 @@
+.stat-name-phone {
+    font-weight: bold;
+    font-size: 3vh;
+    color: #34a084;
+    
+}
+
 .stat-name {
-    font-size: 1.2vmin;
+    font-weight: bold;
+    text-align:center;
+    font-size: 3vh;
+    color: #34a084;
+}
+.colon {
+    font-weight: bold;
+    text-align:center;
+    font-size: 5vh;
+    color: #34a084;
+    vertical-align: middle;
+}
+
+.stat-value {
+    font-family: "Bungee", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 40px;
+    text-align: center;
 }
