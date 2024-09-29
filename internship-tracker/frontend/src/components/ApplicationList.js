@@ -234,10 +234,10 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                                             style={{ backgroundColor: getBackgroundColor(app.currentStatus) }}
                                         >
                                             <Row>
-                                                <Col lg="5" className='role' style={{maxHeight: '30px'}}>
+                                                <Col lg="5" className='role' style={{overflowY: 'hidden', overflowX: 'scroll', maxHeight: '30px'}}>
                                                     <strong>{app.role}</strong>
                                                 </Col >
-                                                <Col style={{overflow: 'hidden', maxHeight: '30px'}}>
+                                                <Col style={{overflowY: 'hidden', maxHeight: '30px'}}>
                                                 @ <strong>{app.company}</strong>
                                                 </Col>
                                                 <Col2 xs="3">
@@ -505,10 +505,10 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                                             style={{ backgroundColor: getBackgroundColor(app.currentStatus) }}
                                         >
                                             <Row>
-                                                <Col md="5" className='role' style={{overflow: 'auto'}}>
+                                                <Col md="5" className='role' style={{overflow: 'auto', maxHeight: '30px'}}>
                                                     <strong>{app.role}</strong>
                                                 </Col >
-                                                <Col md="3" className='role' style={{overflow: 'auto'}}>
+                                                <Col md="3" className='role' style={{overflow: 'auto', maxHeight: '30px'}}>
                                                 @ <strong>{app.company}</strong>
                                                 </Col>
                                                 <Col2 xs="4">
