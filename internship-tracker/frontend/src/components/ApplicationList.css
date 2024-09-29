@@ -4,7 +4,9 @@
     overflow-y: auto;
     overflow-x: hidden;
 }
-
+::-webkit-scrollbar {
+    display: none;
+}
 .role {
     white-space: nowrap;
     overflow-x: auto;
@@ -17,15 +19,16 @@
 /* Tablets */
 @media (max-width: 1024px) {
     .scrollable-list-container {
-        max-height: 50vh; /* Increase the height for better visibility */
+        max-height: 60vh; /* Increase the height for better visibility */
+        width: 100%; /* Full width for better visibility */
     }
 
     .role {
-        font-size: 0.9rem; /* Adjust font size for better readability */
+        font-size: 1.2rem; /* Adjust font size for better readability */
     }
 
     .oaDates, .interviewDates {
-        font-size: 0.8rem; /* Smaller font on tablets */
+        font-size: .9rem; /* Smaller font on tablets */
     }
 }
 

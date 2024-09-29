@@ -118,7 +118,7 @@ const App = () => {
         <MediaQuery minWidth={1024}>
           {/* Conditional rendering based on isLoggedIn state */}
           {isLoggedIn ? (
-            <>
+            <Container style={{ overflowX: 'hidden', overflowY: 'scroll'}}>
               <AppContainer className="statsContainer"> 
                 <Stats stat = {stats}/> {}
               </AppContainer>
@@ -140,7 +140,7 @@ const App = () => {
               <ApplicationListContainer >
                 <ApplicationList applications={applications} setApplications={setApplications} fetchStats={fetchStats} /> {}
               </ApplicationListContainer>
-            </>
+            </Container>
           ) : (
             <>
               {/* <AppContainer>
@@ -154,19 +154,22 @@ const App = () => {
             </>
         )}
         </MediaQuery>
-        <MediaQuery minWidth={601} maxWidth={769}>
-           {/* Tablet Vertical View */}
+        <MediaQuery minWidth={768} maxWidth={1023}>
+           {/* Tablet Horizontal View */}
           {isLoggedIn ? (
             <>
-             <Container style={{ overflowX: 'hidden', minWidth: "90vw"}}>
+             <Container style={{ overflowX: 'hidden', overflowY: 'auto', maxHeight: '100vh', maxWidth: '100wh',}}>
               <AppContainer className="statsContainer"> 
                 <Stats stat = {stats}/>
               </AppContainer>
 
               <AppContainer>
                 <Row>
-                  <Col>
+                  <Col md="auto">
                     <h1>Application Tracker</h1>
+                    
+                  </Col>
+                  <Col>
                     <Button onClick={()=> openInNewTab("https://www.lakshyagour.com/application-tracker")}>Learn More</Button>
                   </Col>
                   <Col xs lg="2">
@@ -186,39 +189,7 @@ const App = () => {
           )}
           
         </MediaQuery>
-        <MediaQuery minWidth={770} maxWidth={1023}>
-           {/* Tablet Vertical View */}
-          {isLoggedIn ? (
-            <>
-             <Container style={{ overflowX: 'hidden', maxHeight: '100vh' }}>
-              <AppContainer className="statsContainer"> 
-                <Stats stat = {stats}/>
-              </AppContainer>
-
-              <AppContainer>
-                <Row>
-                  <Col>
-                    <h1>Application Tracker</h1>
-                    <Button onClick={()=> openInNewTab("https://www.lakshyagour.com/application-tracker")}>Learn More</Button>
-                  </Col>
-                  <Col xs lg="2">
-                    <Button variant="secondary" onClick={handleLogout}>Logout</Button>
-                  </Col>
-                </Row>
-                <ApplicationForm setApplications={setApplications} />
-              </AppContainer>
-
-              <ApplicationListContainer>
-                <ApplicationList applications={applications} setApplications={setApplications} fetchStats={fetchStats} />
-              </ApplicationListContainer>
-              </Container>
-            </>
-          ) : (
-            <Login handleSample={handleSample} onGoogleSuccess={handleGoogleLoginSuccess} onGoogleFailure={handleGoogleLoginFailure}/>
-          )}
-          
-        </MediaQuery>
-        <MediaQuery maxWidth={600}>
+        <MediaQuery maxWidth={767}>
            {/* Mobile View */}
           {isLoggedIn ? (
             <>
