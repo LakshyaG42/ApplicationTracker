@@ -310,34 +310,18 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
             </MediaQuery>
 
             <MediaQuery minWidth={1024} maxWidth={1439} > {/* Render only on laptop/tablet/smalldesktop */}
-                <Container style={{padding: "0px", minWidth: "100vw"}}>
+                <Container>
                 <Row>
-                    <Col xs="2">
+                    <Col xs="5">
                     <h2>Applications</h2>
                     </Col>
-                    <Col xs="3">
-                        <Form.Control
-                            type="text"
-                            placeholder="Search by Company"
-                            value={searchCompany}
-                            onChange={(e) => setSearchCompany(e.target.value)}
-                        />
-                    </Col>
-                    <Col xs="3">
-                        <Form.Control
-                            type="text"
-                            placeholder="Search by Role"
-                            value={searchRole}
-                            onChange={(e) => setSearchRole(e.target.value)}
-                        />
-                    </Col>
-                    <Col xs="2">
+                    <Col>
                         <Form.Select onChange={handleSortChange} value={sortDirection}>
                             <option value="asc">Ascending</option>
                             <option value="desc">Descending</option>
                         </Form.Select>           
                     </Col>
-                    <Col xs="2">
+                    <Col>
                         <Form.Select onChange={handleFilterChange} value={filterStatus}>
                             <option value="All">All</option>
                             <option value="Applied">Applied</option>
@@ -349,6 +333,25 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                             <option value="Rejected">Rejected</option>
                         </Form.Select>
                     </Col>
+                </Row>
+                <Row>
+                    <Col xs="">
+                        <Form.Control
+                            type="text"
+                            placeholder="Search by Company"
+                            value={searchCompany}
+                            onChange={(e) => setSearchCompany(e.target.value)}
+                        />
+                    </Col>
+                    <Col xs="" style={{paddingBottom: "10px"}}>
+                        <Form.Control
+                            type="text"
+                            placeholder="Search by Role"
+                            value={searchRole}
+                            onChange={(e) => setSearchRole(e.target.value)}
+                        />
+                    </Col>
+                    
                 </Row>
                 <div className="scrollable-list-container">
                 <Row>
@@ -366,13 +369,13 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                                             style={{ backgroundColor: getBackgroundColor(app.currentStatus) }}
                                         >
                                             <Row>
-                                                <Col md="auto" className='role' style={{maxHeight: '30px'}}>
+                                                <Col  xs="4" className='role' style={{maxHeight: '30px'}}>
                                                     <strong>{app.role}</strong>
                                                 </Col >
-                                                <Col md="auto" style={{overflow: 'hidden', maxHeight: '30px'}}>
+                                                <Col sm="2" style={{overflow: 'hidden', maxHeight: '30px'}}>
                                                 @ <strong>{app.company}</strong>
                                                 </Col>
-                                                <Col2 xs="3">
+                                                <Col2 sm="3">
                                                     <Form.Select
                                                         value={app.currentStatus}
                                                         onChange={(e) => openDateModal(app._id, e.target.value)}
@@ -386,14 +389,14 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                                                         <option value="Rejected">Rejected</option>
                                                     </Form.Select>
                                                 </Col2>
-                                                <Col2 xs="auto">
+                                                <Col2 style={{paddingLeft:"10px", paddingRight:"10px",}}>
                                                     <Button variant="secondary" onClick={() => handleNotesOpen(app._id)}>Notes</Button>
                                                 </Col2>
-                                                <Col2 xs="auto">
+                                                <Col2 style={{paddingLeft:"10px", paddingRight:"10px",}}>
                                                     <Button variant="danger" onClick={() => handleDelete(app._id)}>Delete</Button>
                                                 </Col2>
                                             </Row>
-                                            <Row style={{marginTop: '-15px'}}>
+                                            <Row style={{marginTop: '-10px'}}>
                                                 <Col>
                                                     <small className="text-muted" style={{ fontStyle: 'italic' }}>
                                                         Applied on {new Date(app.dateApplied).toUTCString().substring(4, 16)}      

@@ -118,9 +118,9 @@ const App = () => {
         <MediaQuery minWidth={1024}>
           {/* Conditional rendering based on isLoggedIn state */}
           {isLoggedIn ? (
-            <Container style={{ overflowX: 'hidden', overflowY: 'scroll'}}>
+            <Container style={{ overflowX: 'hidden', overflowY: 'scroll', maxHeight: '100vh', maxWidth: '100wh'}}>
               <AppContainer className="statsContainer"> 
-                <Stats stat = {stats}/> {}
+                <Stats stat = {stats}/>
               </AppContainer>
 
               <AppContainer>
@@ -143,13 +143,7 @@ const App = () => {
             </Container>
           ) : (
             <>
-              {/* <AppContainer>
-                <Alert variant="danger">You are not logged in. Please log in to access the application.</Alert>
-                <ButtonContainer>
-                  <GoogleLoginButton onSuccess={handleGoogleLoginSuccess} onFailure={handleGoogleLoginFailure} />
-                  <Button variant="primary" onClick={handleSample}>Sample Data</Button>
-                </ButtonContainer>                  
-              </AppContainer> */}
+              {/* Display login component if user is not logged in */}
               <Login handleSample={handleSample} onGoogleSuccess={handleGoogleLoginSuccess} onGoogleFailure={handleGoogleLoginFailure}/>
             </>
         )}
@@ -158,7 +152,7 @@ const App = () => {
            {/* Tablet Horizontal View */}
           {isLoggedIn ? (
             <>
-             <Container style={{ overflowX: 'hidden', overflowY: 'auto', maxHeight: '100vh', maxWidth: '100wh',}}>
+             <Container style={{ overflowX: 'hidden', overflowY: 'auto', maxHeight: '100vh', maxWidth: '100wh'}}>
               <AppContainer className="statsContainer"> 
                 <Stats stat = {stats}/>
               </AppContainer>
