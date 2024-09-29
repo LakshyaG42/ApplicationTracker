@@ -1,48 +1,68 @@
-
-.fade-enter {
-    opacity: 0;
-    transform: scale(0.9);
-}
-.fade-enter-active {
-    opacity: 1;
-    transform: scale(1);
-    transition: opacity 500ms, transform 500ms;
-}
-.fade-exit {
-    opacity: 1;
-    transform: scale(1);
-}
-.fade-exit-active {
-    opacity: 0;
-    transform: scale(0.9);
-    transition: opacity 500ms, transform 500ms;
-}
+/* Default: Laptops and large displays */
 .scrollable-list-container {
-    max-height: 40vh; /* Adjust the height as needed */
+    max-height: 40vh;
     overflow-y: auto;
     overflow-x: hidden;
 }
-
-.oaDates {
-    color: #0058a0;
-    margin-top: 0;
-    padding: 0;
-    height: 10px;
-}
-.interviewDates {
-    color: #474747ea;
-    margin-top: 0;
-    padding: 0;
-    height: 10px;
-}
-
-.role {
-    flex: 1;
-    overflow-x: scroll;
-    white-space: nowrap;
-}
-
-.role::-webkit-scrollbar {
-    width: 0;
+::-webkit-scrollbar {
     display: none;
+}
+.role {
+    white-space: nowrap;
+    overflow-x: auto;
+}
+
+.oaDates, .interviewDates {
+    color: #0058a0;
+}
+
+/* Tablets */
+@media (max-width: 1024px) {
+    .scrollable-list-container {
+        max-height: 60vh; /* Increase the height for better visibility */
+        width: 100%; /* Full width for better visibility */
+    }
+
+    .role {
+        font-size: 1.2rem; /* Adjust font size for better readability */
+    }
+
+    .oaDates, .interviewDates {
+        font-size: .9rem; /* Smaller font on tablets */
+    }
+}
+
+/* Phones */
+@media (max-width: 768px) {
+    .scrollable-list-container {
+        max-height: 60vh;
+    }
+
+    .role {
+        font-size: 0.8rem; 
+        white-space: normal; /* Stack text instead of scroll */
+    }
+
+    .oaDates, .interviewDates {
+        font-size: 0.7rem;
+    }
+
+    .scrollable-list-container {
+        max-height: 70vh; /* More space for lists */
+    }
+}
+
+/* Smaller Phones */
+@media (max-width: 576px) {
+    .role {
+        font-size: 1rem;
+    }
+
+    .oaDates, .interviewDates {
+        font-size: 0.75rem;
+    }
+
+    .scrollable-list-container {
+        max-height: 75vh;
+    }
 }

@@ -18,7 +18,8 @@ body {
     margin: 10px 0;
     text-align: center;
 }
-.LoginContainer {
+@media (min-width: 768px) {
+  .LoginContainer {
     font-family: 'Montserrat', sans-serif;
   background-color: #fff;
   border-radius: 30px;
@@ -30,8 +31,26 @@ body {
   max-width: 100%;
   min-height: 480px;
   height: 60vh;
+}
+}
+
+@media (max-width: 768px) {
+  .LoginContainer {
+    font-family: 'Montserrat', sans-serif;
+  background-color: #fff;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+
+  width: 100vw;
+  max-width: 100%;
+  min-height: 480px;
+  height: 100vh;
 
 }
+}
+
 .spanner {
     text-align: center;
 }
@@ -225,3 +244,8 @@ body {
 .LoginContainer.active .toggle-right {
   transform: translateX(200%);
 }
+
+
+
+/* Add media query for mobile devices */
+
