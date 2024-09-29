@@ -251,7 +251,7 @@ const Stats = ({ stat }) => {
 
         <MediaQuery maxWidth={767}> {/* Render only on mobile */}
           <Row className="stat-row">
-            <Col xs="8">
+            <Col xs="7">
               <div className="stat-column">
                 <h3 className="stat-name-phone ">Online Assessments</h3>
               </div>
@@ -266,7 +266,7 @@ const Stats = ({ stat }) => {
             </Col>
           </Row>
           <Row className="stat-row">
-            <Col xs="8">
+            <Col xs="7">
               <div className="stat-column">
                 <h3 className="stat-name-phone ">Total Interviews</h3>
               </div>
@@ -281,7 +281,7 @@ const Stats = ({ stat }) => {
             </Col>
           </Row>    
           <Row className="stat-row">
-            <Col xs="8">
+            <Col xs="7">
               <div className="stat-column">
                 <h3 className="stat-name-phone ">Total Applications</h3>
               </div>
@@ -289,14 +289,14 @@ const Stats = ({ stat }) => {
             <Col>
               <h3 className="colon">:</h3>
             </Col>
-            <Col>
+            <Col xs="3">
               <div className="stat-column">
                 <p className="stat-value">{stats.applications}</p>
               </div>
             </Col>
           </Row> 
           <Row className="stat-row">
-            <Col xs="8">
+            <Col xs="7">
               <div className="stat-column">
                 <h3 className="stat-name-phone ">Offers Received</h3>
               </div>
@@ -311,7 +311,7 @@ const Stats = ({ stat }) => {
             </Col>
           </Row> 
           <Row className="stat-row">
-            <Col xs="8">
+            <Col xs="7">
               <div className="stat-column">
                 <h3 className="stat-name-phone ">Rejected</h3>
               </div>
@@ -326,7 +326,7 @@ const Stats = ({ stat }) => {
             </Col>
           </Row> 
           <Row className="stat-row">
-            <Col xs="8">
+            <Col xs="7">
               <div className="stat-column">
                 <h3 className="stat-name-phone ">Current Interviews</h3>
               </div>
@@ -341,7 +341,7 @@ const Stats = ({ stat }) => {
             </Col>
           </Row> 
           <Row className="stat-row">
-            <Col xs="8">
+            <Col xs="7">
               <div className="stat-column">
                 <h3 className="stat-name-phone ">Active OAs</h3>
               </div>
