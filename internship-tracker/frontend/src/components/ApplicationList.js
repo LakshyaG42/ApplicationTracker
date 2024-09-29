@@ -234,10 +234,10 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                                             style={{ backgroundColor: getBackgroundColor(app.currentStatus) }}
                                         >
                                             <Row>
-                                                <Col lg="5" className='role' style={{overflowY: 'hidden', overflowX: 'scroll', maxHeight: '30px'}}>
+                                                <Col lg="5" className='role' style={{overflowY: 'hidden', overflowX: 'scroll'}}>
                                                     <strong>{app.role}</strong>
                                                 </Col >
-                                                <Col style={{overflowY: 'hidden', maxHeight: '30px'}}>
+                                                <Col style={{overflowY: 'hidden'}}>
                                                 @ <strong>{app.company}</strong>
                                                 </Col>
                                                 <Col2 xs="3">
@@ -369,10 +369,10 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                                             style={{ backgroundColor: getBackgroundColor(app.currentStatus) }}
                                         >
                                             <Row>
-                                                <Col  xs="4" className='role' style={{maxHeight: '30px'}}>
+                                                <Col  xs="4" className='role' style={{}}>
                                                     <strong>{app.role}</strong>
                                                 </Col >
-                                                <Col sm="2" style={{overflow: 'hidden', maxHeight: '30px'}}>
+                                                <Col sm="2" style={{overflow: 'hidden'}}>
                                                 @ <strong>{app.company}</strong>
                                                 </Col>
                                                 <Col2 sm="3">
@@ -505,10 +505,10 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                                             style={{ backgroundColor: getBackgroundColor(app.currentStatus) }}
                                         >
                                             <Row>
-                                                <Col md="5" className='role' style={{overflow: 'auto', maxHeight: '30px'}}>
+                                                <Col md="5" className='role' style={{overflow: 'auto'}}>
                                                     <strong>{app.role}</strong>
                                                 </Col >
-                                                <Col md="3" className='role' style={{overflow: 'auto', maxHeight: '30px'}}>
+                                                <Col md="3" className='role' style={{overflow: 'auto'}}>
                                                 @ <strong>{app.company}</strong>
                                                 </Col>
                                                 <Col2 xs="4">
@@ -641,12 +641,12 @@ const ApplicationList = ({ applications, setApplications, fetchStats }) => {
                                             style={{ backgroundColor: getBackgroundColor(app.currentStatus) }}
                                         >
                                             <Row>
-                                                <Col lg="5" className='role' style={{maxHeight: '30px'}}>
+                                                <Col lg="5" className='role'>
                                                     <strong>{app.role}</strong>
                                                 </Col >
                                             </Row>
                                             <Row>
-                                                <Col style={{overflow: 'hidden', maxHeight: '30px'}}>
+                                                <Col style={{overflow: 'hidden',}}>
                                                 @ <strong>{app.company}</strong>
                                                 </Col>
                                             </Row>
